@@ -1,6 +1,6 @@
 AUTO_COMMAND=""
 AUTO_COMMAND_START=0
-AUTO_NOTIFY_THRESHOLD=2
+AUTO_NOTIFY_THRESHOLD=5
 AUTO_NOTIFY_IGNORE=("vim" "nvim" "emacs" "less" "more" "man")
 
 autoload -Uz add-zsh-hook
