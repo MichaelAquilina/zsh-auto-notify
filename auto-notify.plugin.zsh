@@ -12,7 +12,7 @@ function _auto_notify_message() {
     local command="$1"
     local elapsed="$2"
     # Run using echo -e in order to make sure notify-send picks up new line
-    echo -e "'$command' has completed\n(Total time: $elapsed seconds)"
+    echo -e "\"$command\" has completed\n(Total time: $elapsed seconds)"
 }
 
 function _is_auto_notify_ignored() {

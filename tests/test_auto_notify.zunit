@@ -2,6 +2,19 @@
 
 @setup {
     load "../auto-notify.plugin.zsh"
+
+    function notify-send {
+        echo "Notification: $@"
+    }
+
+    # Mock date function to return a frozen timestamp
+    function date {
+        if [[ "$1" == +"%s" ]]; then
+            echo "11100"
+        else
+            date "$@"
+        fi
+    }
 }
 
 @test 'version exported' {
@@ -11,4 +24,34 @@
 @test 'hook functions are loaded by default' {
     assert '_auto_notify_track' in $preexec_functions
     assert '_auto_notify_send' in $precmd_functions
+}
+
+@test 'auto-notify-send does not send notification for short task' {
+    AUTO_COMMAND="foo bar -r"
+    AUTO_COMMAND_START=11099
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$output" is_empty
+}
+
+@test 'auto-notify-send does not send notification for ignored commands' {
+    for command in $AUTO_NOTIFY_IGNORE; do
+        AUTO_COMMAND="$command bar -r"
+        AUTO_COMMAND_START=11000
+        run _auto_notify_send
+
+        assert $state equals 0
+        assert "$output" is_empty
+    done
+}
+
+@test 'auto-notify-send sends notification' {
+    AUTO_COMMAND="foo bar -r"
+    AUTO_COMMAND_START=11080
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$lines[1]" same_as 'Notification: "foo bar -r" has completed'
+    assert "$lines[2]" same_as "(Total time: 20 seconds)"
 }
