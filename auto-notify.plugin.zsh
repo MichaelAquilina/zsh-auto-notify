@@ -48,7 +48,7 @@ function _auto_notify_send() {
 
 function _auto_notify_track() {
     AUTO_COMMAND="$1"
-    AUTO_COMMAND_FULL="$2"
+    AUTO_COMMAND_FULL="$3"
     AUTO_COMMAND_START="$(date +"%s")"
 }
 
