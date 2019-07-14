@@ -26,6 +26,16 @@
     assert '_auto_notify_send' in $precmd_functions
 }
 
+@test 'enable/disable auto-notify' {
+    disable_auto_notify
+    assert '_auto_notify_track' not_in $preexec_functions
+    assert '_auto_notify_send' not_in $precmd_functions
+
+    enable_auto_notify
+    assert '_auto_notify_track' in $preexec_functions
+    assert '_auto_notify_send' in $precmd_functions
+}
+
 @test 'auto-notify-send does not send notification for short task' {
     AUTO_COMMAND="foo bar -r"
     AUTO_COMMAND_START=11099

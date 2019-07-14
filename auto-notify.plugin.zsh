@@ -45,6 +45,15 @@ function _auto_notify_track() {
     AUTO_COMMAND_START="$(date +"%s")"
 }
 
-autoload -U add-zsh-hook
-add-zsh-hook preexec _auto_notify_track
-add-zsh-hook precmd _auto_notify_send
+function disable_auto_notify() {
+    add-zsh-hook -D preexec _auto_notify_track
+    add-zsh-hook -D precmd _auto_notify_send
+}
+
+function enable_auto_notify() {
+    add-zsh-hook preexec _auto_notify_track
+    add-zsh-hook precmd _auto_notify_send
+}
+
+autoload -Uz add-zsh-hook
+enable_auto_notify
