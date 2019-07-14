@@ -9,7 +9,7 @@ has completed.
 * Usage_
 * Requirements_
 * Installation_
-* `Temporarily Disabling Notifications`
+* `Temporarily Disabling Notifications`_
 * Contributing_
 * `Running Tests`_
 
@@ -72,7 +72,7 @@ Temporarily Disabling Notifications
 
 You can temporarily disable auto notify by running the command ``disable_auto_notify``.
 
- When you want to re-enable notifications, run the command ``enable_auto_notify``.
+When you want to re-enable notifications, run the command ``enable_auto_notify``.
 
 Contributing
 ------------
