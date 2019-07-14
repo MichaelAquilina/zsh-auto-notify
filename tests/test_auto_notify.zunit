@@ -38,6 +38,7 @@
 
 @test 'auto-notify-send does not send notification for short task' {
     AUTO_COMMAND="foo bar -r"
+    AUTO_COMMAND_FULL="foo bar -r"
     AUTO_COMMAND_START=11099
     run _auto_notify_send
 
@@ -47,7 +48,8 @@
 
 @test 'auto-notify-send does not send notification for ignored commands' {
     for command in $AUTO_NOTIFY_IGNORE; do
-        AUTO_COMMAND="$command bar -r"
+        AUTO_COMMAND="somealias bar -r"
+        AUTO_COMMAND_FULL="$command bar -r"
         AUTO_COMMAND_START=11000
         run _auto_notify_send
 
@@ -57,11 +59,12 @@
 }
 
 @test 'auto-notify-send sends notification' {
-    AUTO_COMMAND="foo bar -r"
+    AUTO_COMMAND="f bar -r"
+    AUTO_COMMAND_FULL="foo bar -r"
     AUTO_COMMAND_START=11080
     run _auto_notify_send
 
     assert $state equals 0
-    assert "$lines[1]" same_as 'Notification: "foo bar -r" has completed'
+    assert "$lines[1]" same_as 'Notification: "f bar -r" has completed'
     assert "$lines[2]" same_as "(Total time: 20 seconds)"
 }

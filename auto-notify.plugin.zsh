@@ -1,8 +1,14 @@
 export AUTO_NOTIFY_VERSION="0.1.0"
 
+# Command that the user has executed
 AUTO_COMMAND=""
+# Full command that the user has executed after alias expansion
+AUTO_COMMAND_FULL=""
+# Command start time in seconds since epoch
 AUTO_COMMAND_START=0
+# Threshold for when to automatically show a notification
 AUTO_NOTIFY_THRESHOLD=5
+# List of commands/programs to ignore sending notifications for
 AUTO_NOTIFY_IGNORE=("vim" "nvim" "emacs" "less" "more" "man")
 
 autoload -Uz add-zsh-hook
@@ -29,7 +35,7 @@ function _is_auto_notify_ignored() {
 function _auto_notify_send() {
     local current="$(date +"%s")"
 
-    if [[ "$(_is_auto_notify_ignored "$AUTO_COMMAND")" == "yes" ]]; then
+    if [[ "$(_is_auto_notify_ignored "$AUTO_COMMAND_FULL")" == "yes" ]]; then
         return
     fi
 
@@ -42,6 +48,7 @@ function _auto_notify_send() {
 
 function _auto_notify_track() {
     AUTO_COMMAND="$1"
+    AUTO_COMMAND_FULL="$2"
     AUTO_COMMAND_START="$(date +"%s")"
 }
 
