@@ -1,3 +1,5 @@
+export AUTO_NOTIFY_VERSION="0.1.0"
+
 AUTO_COMMAND=""
 AUTO_COMMAND_START=0
 AUTO_NOTIFY_THRESHOLD=5
@@ -24,7 +26,7 @@ function _is_auto_notify_ignored() {
     print "no"
 }
 
-function _notify_command() {
+function _auto_notify_send() {
     local current="$(date +"%s")"
 
     if [[ "$(_is_auto_notify_ignored "$AUTO_COMMAND")" == "yes" ]]; then
@@ -38,10 +40,11 @@ function _notify_command() {
     fi
 }
 
-function _track_command() {
+function _auto_notify_track() {
     AUTO_COMMAND="$1"
     AUTO_COMMAND_START="$(date +"%s")"
 }
 
-add-zsh-hook preexec _track_command
-add-zsh-hook precmd _notify_command
+autoload -U add-zsh-hook
+add-zsh-hook preexec _auto_notify_track
+add-zsh-hook precmd _auto_notify_send

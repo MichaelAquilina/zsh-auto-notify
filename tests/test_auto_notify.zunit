@@ -1,0 +1,14 @@
+#!/usr/bin/env zunit
+
+@setup {
+    load "../auto-notify.plugin.zsh"
+}
+
+@test 'version exported' {
+    assert "$AUTO_NOTIFY_VERSION" is_not_empty
+}
+
+@test 'hook functions are loaded by default' {
+    assert '_auto_notify_track' in $preexec_functions
+    assert '_auto_notify_send' in $precmd_functions
+}
