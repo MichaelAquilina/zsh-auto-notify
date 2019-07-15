@@ -13,8 +13,6 @@ export AUTO_NOTIFY_IGNORE=(
     "vim" "nvim" "emacs" "less" "more" "man" "tig" "watch" "git commit"
 )
 
-autoload -Uz add-zsh-hook
-
 
 function _auto_notify_message() {
     local command="$1"
