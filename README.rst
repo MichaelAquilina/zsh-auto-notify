@@ -20,6 +20,8 @@ You dont need to do anything. Once it's installed,
 ``zsh-auto-notify`` will let you know if a long running task has completed its work via a
 notification in your desktop environment.
 
+.. image:: img/notification-example.png
+
 Requirements
 ------------
 
