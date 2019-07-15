@@ -18,7 +18,14 @@ function _auto_notify_message() {
     local command="$1"
     local elapsed="$2"
     # Run using echo -e in order to make sure notify-send picks up new line
-    echo -e "\"$command\" has completed\n(Total time: $elapsed seconds)"
+    text="$(echo -e "\"$command\" has completed\n(Total time: $elapsed seconds)")"
+    platform="$(uname)"
+
+    if [[ "$platform" = "Linux" ]]; then
+        notify-send "$text"
+    elif [[ "$platform" == "Darwin" ]]; then
+        display notification "$text" with title "Command Completed"
+    fi
 }
 
 function _is_auto_notify_ignored() {
@@ -42,7 +49,7 @@ function _auto_notify_send() {
     let "elapsed = current - AUTO_COMMAND_START"
 
     if [[ -n "$AUTO_COMMAND" && $elapsed -gt $AUTO_NOTIFY_THRESHOLD ]]; then
-        notify-send "$(_auto_notify_message "$AUTO_COMMAND" "$elapsed")"
+        _auto_notify_message "$AUTO_COMMAND" "$elapsed"
     fi
 }
 
