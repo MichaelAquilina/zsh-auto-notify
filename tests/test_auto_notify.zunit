@@ -7,6 +7,10 @@
         echo "Notification: $@"
     }
 
+    function uname {
+        echo "Linux"
+    }
+
     # Mock date function to return a frozen timestamp
     function date {
         if [[ "$1" == +"%s" ]]; then
@@ -58,7 +62,7 @@
     done
 }
 
-@test 'auto-notify-send sends notification' {
+@test 'auto-notify-send sends notification on Linux' {
     AUTO_COMMAND="f bar -r"
     AUTO_COMMAND_FULL="foo bar -r"
     AUTO_COMMAND_START=11080
