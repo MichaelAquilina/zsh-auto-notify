@@ -32,6 +32,7 @@ It is possible the plugin might work on even older versions.
 However they would not have been tested as part of the CI test process.
 
 Supported desktop environments:
+
 * Linux X/Wayland (Requires `notify_send` to be installed)
 * MacOSX
 
