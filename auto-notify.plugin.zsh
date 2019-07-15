@@ -6,8 +6,8 @@ AUTO_COMMAND=""
 AUTO_COMMAND_FULL=""
 # Command start time in seconds since epoch
 AUTO_COMMAND_START=0
-# Threshold for when to automatically show a notification
-export AUTO_NOTIFY_THRESHOLD=5
+# Threshold in seconds for when to automatically show a notification
+export AUTO_NOTIFY_THRESHOLD=10
 # List of commands/programs to ignore sending notifications for
 export AUTO_NOTIFY_IGNORE=(
     "vim" "nvim" "emacs" "less" "more" "man" "tig" "watch" "git commit"
