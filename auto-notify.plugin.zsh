@@ -25,6 +25,9 @@ function _auto_notify_message() {
         notify-send "$text"
     elif [[ "$platform" == "Darwin" ]]; then
         osascript -e "display notification \"$text\" with title \"Command Completed\""
+    else
+        printf "Unknown platform for sending notifications: $platform\n"
+        printf "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/"
     fi
 }
 
