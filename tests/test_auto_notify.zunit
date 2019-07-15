@@ -84,3 +84,17 @@
     assert "$lines[1]" same_as 'Notification: "f bar -r" has completed'
     assert "$lines[2]" same_as "(Total time: 20 seconds)"
 }
+
+@test 'auto-notify-send sends notification on Linux' {
+    AUTO_COMMAND="f bar -r"
+    AUTO_COMMAND_FULL="foo bar -r"
+    AUTO_COMMAND_START=11080
+
+    function uname {
+        echo "Hal9000"
+    }
+
+    run _auto_notify_send
+    assert $state equals 0
+    assert "$lines[1]" same_as "Unknown platform for sending notifications: Hal9000"
+    assert "$lines[2]" same_as "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/"
