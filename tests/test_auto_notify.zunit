@@ -4,19 +4,19 @@
     load "../auto-notify.plugin.zsh"
 
     function notify-send {
-        echo "Notification: $@"
+        echo - "Notification: $@"
     }
 
     function uname {
-        echo "Linux"
+        echo - "Linux"
     }
 
     # Mock date function to return a frozen timestamp
     function date {
         if [[ "$1" == +"%s" ]]; then
-            echo "11100"
+            echo - "11100"
         else
-            date "$@"
+            date - "$@"
         fi
     }
 }
@@ -85,13 +85,33 @@
     assert "$lines[2]" same_as "(Total time: 20 seconds)"
 }
 
+@test 'auto-notify-send sends notification on MacOSX' {
+    AUTO_COMMAND="f bar -r"
+    AUTO_COMMAND_FULL="foo bar -r"
+    AUTO_COMMAND_START=11080
+
+    function uname {
+        echo - "Darwin"
+    }
+
+    function osascript {
+        echo - $@
+    }
+
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$lines[1]" same_as "-e display notification \"\"f bar -r\" has completed"
+    assert "$lines[2]" same_as "(Total time: 20 seconds)\" with title \"Command Completed\""
+}
+
 @test 'auto-notify-send sends warning on unsupported platform' {
     AUTO_COMMAND="f bar -r"
     AUTO_COMMAND_FULL="foo bar -r"
     AUTO_COMMAND_START=11080
 
     function uname {
-        echo "Hal9000"
+        echo - "Hal9000"
     }
 
     run _auto_notify_send

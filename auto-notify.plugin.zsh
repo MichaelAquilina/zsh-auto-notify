@@ -23,7 +23,7 @@ function _auto_notify_message() {
     text="$(echo -e "\"$command\" has completed\n(Total time: $elapsed seconds)")"
     platform="$(uname)"
 
-    if [[ "$platform" = "Linux" ]]; then
+    if [[ "$platform" == "Linux" ]]; then
         notify-send "$text"
     elif [[ "$platform" == "Darwin" ]]; then
         osascript -e "display notification \"$text\" with title \"Command Completed\""
@@ -75,4 +75,5 @@ function enable_auto_notify() {
 }
 
 autoload -Uz add-zsh-hook
+
 enable_auto_notify
