@@ -83,7 +83,7 @@ Configuration
 By default, ``auto-notify`` will send notifications for tasks that take longer than 10 seconds. You
 can configure this value by setting the environment variable ``AUTO_NOTIFY_THRESHOLD``:
 
-..code:: shell
+::
 
     # Set threshold to 20seconds
     export AUTO_NOTIFY_THRESHOLD=20
@@ -95,7 +95,7 @@ A number of commands do not get notifications for long running times due to thei
 The list of ignored commands is specified in the ``AUTO_NOTIFY_IGNORE`` environment variable. This can be modified
 or completely overwritten based on your use case.
 
-..code:: shell
+::
 
     # Add docker to list of ignored commands
     AUTO_NOTIFY_NOTIFY+=("docker")
@@ -105,7 +105,7 @@ Make sure that you append to the array above *after* your plugin manager has bee
 If you wish to completely redefine what is ignored and not ignored, then just set ``AUTO_NOTIFY_IGNORE`` to
 a new array.
 
-..code:: shell
+::
 
     # redefine what is ignored by auto-notify
     export AUTO_NOTIFY_IGNORE=("docker" "man" "sleep")
