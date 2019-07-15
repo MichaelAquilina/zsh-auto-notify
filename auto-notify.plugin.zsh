@@ -24,7 +24,7 @@ function _auto_notify_message() {
     if [[ "$platform" = "Linux" ]]; then
         notify-send "$text"
     elif [[ "$platform" == "Darwin" ]]; then
-        display notification "$text" with title "Command Completed"
+        osascript -e "display notification \"$text\" with title \"Command Completed\""
     fi
 }
 
