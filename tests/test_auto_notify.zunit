@@ -85,7 +85,7 @@
     assert "$lines[2]" same_as "(Total time: 20 seconds)"
 }
 
-@test 'auto-notify-send sends notification on Linux' {
+@test 'auto-notify-send sends warning on unsupported platform' {
     AUTO_COMMAND="f bar -r"
     AUTO_COMMAND_FULL="foo bar -r"
     AUTO_COMMAND_START=11080
