@@ -9,7 +9,9 @@ AUTO_COMMAND_START=0
 # Threshold for when to automatically show a notification
 export AUTO_NOTIFY_THRESHOLD=5
 # List of commands/programs to ignore sending notifications for
-export AUTO_NOTIFY_IGNORE=("vim" "nvim" "emacs" "less" "more" "man" "tig" "watch")
+export AUTO_NOTIFY_IGNORE=(
+    "vim" "nvim" "emacs" "less" "more" "man" "tig" "watch" "git commit"
+)
 
 autoload -Uz add-zsh-hook
 
