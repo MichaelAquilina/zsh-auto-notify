@@ -22,7 +22,11 @@
 }
 
 @test 'version exported' {
+    git_version="$(git tag --list | sort -V | tail -1)"
+    git tag --list
+
     assert "$AUTO_NOTIFY_VERSION" is_not_empty
+    assert "$AUTO_NOTIFY_VERSION" same_as "$git_version"
 }
 
 @test 'hook functions are loaded by default' {
