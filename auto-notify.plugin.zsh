@@ -29,7 +29,7 @@ function _auto_notify_message() {
         osascript -e "display notification \"$text\" with title \"Command Completed\""
     else
         printf "Unknown platform for sending notifications: $platform\n"
-        printf "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/"
+        printf "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/\n"
     fi
 }
 
