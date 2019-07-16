@@ -78,6 +78,23 @@
     done
 }
 
+@test 'auto-notify sends notifications with custom command' {
+    AUTO_NOTIFY_COMMAND="bazzy -ef \"%text\" something"
+    AUTO_COMMAND="f bar -r"
+    AUTO_COMMAND_FULL="foo bar -r"
+    AUTO_COMMAND_START=11080
+
+    function bazzy {
+        echo - $@
+    }
+
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$lines[1]" same_as "bazzy -ef \"\"f bar -r\" has completed"
+    assert "$lines[2]" same_as "(Total time: 20 seconds)\" something"
+}
+
 @test 'auto-notify-send sends notification on Linux' {
     AUTO_COMMAND="f bar -r"
     AUTO_COMMAND_FULL="foo bar -r"

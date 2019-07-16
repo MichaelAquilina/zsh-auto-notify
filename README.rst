@@ -111,6 +111,16 @@ a new array.
     # redefine what is ignored by auto-notify
     export AUTO_NOTIFY_IGNORE=("docker" "man" "sleep")
 
+*Running Custom Commands*
+
+By default ``notify-send`` is used to send notifications on Linux and ``osascript`` is used on MacOSX.
+However the command that is executed can be configured by setting the ``AUTO_NOTIFY_COMMAND`` variable.
+Specify where the text should be placed using the ``%text`` marker. An example can be seen below:
+
+::
+
+    export AUTO_NOTIFY_COMAND="my-fancy-notifier -rd -t20 \"%text\""
+
 Temporarily Disabling Notifications
 -----------------------------------
 
