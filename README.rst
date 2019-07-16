@@ -99,7 +99,7 @@ or completely overwritten based on your use case.
 ::
 
     # Add docker to list of ignored commands
-    AUTO_NOTIFY_NOTIFY+=("docker")
+    AUTO_NOTIFY_IGNORE+=("docker")
 
 Make sure that you append to the array above *after* your plugin manager has been loaded in your ``zshrc``.
 
