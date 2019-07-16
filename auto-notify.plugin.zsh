@@ -15,13 +15,17 @@ export AUTO_NOTIFY_IGNORE=(
 
 
 function _auto_notify_message() {
-    local command="$1"
+    local command_run="$1"
     local elapsed="$2"
     # Run using echo -e in order to make sure notify-send picks up new line
-    text="$(echo -e "\"$command\" has completed\n(Total time: $elapsed seconds)")"
+    text="$(echo -e "\"$command_run\" has completed\n(Total time: $elapsed seconds)")"
     platform="$(uname)"
 
-    if [[ "$platform" == "Linux" ]]; then
+    if [[ -n "$AUTO_NOTIFY_COMMAND" ]]; then
+        local COMMAND="${AUTO_NOTIFY_COMMAND//\%text/$text}"
+        echo $COMMAND
+        eval $COMMAND
+    elif [[ "$platform" == "Linux" ]]; then
         notify-send "$text"
     elif [[ "$platform" == "Darwin" ]]; then
         osascript -e "display notification \"$text\" with title \"Command Completed\""
