@@ -79,7 +79,7 @@ Then add this line to your ``.zshrc``. Make sure it is **before** the line ``sou
 Configuration
 -------------
 
-*Notification Threshold*
+**Notification Threshold**
 
 By default, ``auto-notify`` will send notifications for tasks that take longer than 10 seconds. You
 can configure this value by setting the environment variable ``AUTO_NOTIFY_THRESHOLD``:
@@ -90,7 +90,7 @@ can configure this value by setting the environment variable ``AUTO_NOTIFY_THRES
     export AUTO_NOTIFY_THRESHOLD=20
 
 
-*Ignored Commands*
+**Ignored Commands**
 
 A number of commands do not get notifications for long running times due to their nature (e.g. ``watch`` or ``man``).
 The list of ignored commands is specified in the ``AUTO_NOTIFY_IGNORE`` environment variable. This can be modified
@@ -111,7 +111,7 @@ a new array.
     # redefine what is ignored by auto-notify
     export AUTO_NOTIFY_IGNORE=("docker" "man" "sleep")
 
-*Running Custom Commands*
+**Running Custom Commands**
 
 By default ``notify-send`` is used to send notifications on Linux and ``osascript`` is used on MacOSX.
 However the command that is executed can be configured by setting the ``AUTO_NOTIFY_COMMAND`` variable.
