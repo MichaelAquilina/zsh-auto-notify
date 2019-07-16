@@ -168,10 +168,6 @@ all you need to do is run ``mv ~/.gitconfig.bak ~/.gitconfig``
 
 .. _oh-my-zsh: https://github.com/robbyrussell/oh-my-zsh
 
-.. _Arch Linux: https://www.archlinux.org/
-
-.. _AUR: https://aur.archlinux.org/packages/zsh-auto-notify/
-
 .. |GPLv3| image:: https://img.shields.io/badge/License-GPL%20v3-blue.svg
    :target: https://www.gnu.org/licenses/gpl-3.0
 
