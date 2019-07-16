@@ -10,7 +10,7 @@ AUTO_COMMAND_START=0
 export AUTO_NOTIFY_THRESHOLD=10
 # List of commands/programs to ignore sending notifications for
 export AUTO_NOTIFY_IGNORE=(
-    "vim" "nvim" "emacs" "less" "more" "man" "tig" "watch" "git commit" "top" "htop"
+    "vim" "nvim" "less" "more" "man" "tig" "watch" "git commit" "top" "htop" "ssh"
 )
 
 
