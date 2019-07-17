@@ -54,6 +54,7 @@ function _auto_notify_send() {
     if [[ -n "$AUTO_COMMAND" && $elapsed -gt $AUTO_NOTIFY_THRESHOLD ]]; then
         _auto_notify_message "$AUTO_COMMAND" "$elapsed"
     fi
+    AUTO_COMMAND=""
 }
 
 function _auto_notify_track() {
