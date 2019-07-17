@@ -17,9 +17,9 @@ export AUTO_NOTIFY_IGNORE=(
 function _auto_notify_message() {
     local command="$1"
     local elapsed="$2"
+    local platform="$(uname)"
     # Run using echo -e in order to make sure notify-send picks up new line
     text="$(echo -e "\"$command\" has completed\n(Total time: $elapsed seconds)")"
-    platform="$(uname)"
 
     if [[ "$platform" == "Linux" ]]; then
         notify-send "$text"
