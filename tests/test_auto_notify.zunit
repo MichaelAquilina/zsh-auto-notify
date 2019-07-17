@@ -44,6 +44,17 @@
     assert '_auto_notify_send' in $precmd_functions
 }
 
+@test 'auto-notify-send does not send notification if tracking not set' {
+    unset AUTO_COMMAND
+    unset AUTO_COMMAND_FULL
+    unset AUTO_COMMAND_START
+
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$output" is_empty
+}
+
 @test 'auto-notify-send does not send notification for short task' {
     AUTO_COMMAND="foo bar -r"
     AUTO_COMMAND_FULL="foo bar -r"
