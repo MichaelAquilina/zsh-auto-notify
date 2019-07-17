@@ -19,7 +19,7 @@ function _auto_notify_message() {
     local elapsed="$2"
     local platform="$(uname)"
     # Run using echo -e in order to make sure notify-send picks up new line
-    text="$(echo -e "\"$command\" has completed\n(Total time: $elapsed seconds)")"
+    local text="$(echo -e "\"$command\" has completed\n(Total time: $elapsed seconds)")"
 
     if [[ "$platform" == "Linux" ]]; then
         notify-send "$text"
