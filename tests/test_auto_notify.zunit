@@ -66,6 +66,16 @@
     done
 }
 
+@test 'auto-notify-send does not send notification for ignored piped commands' {
+    AUTO_COMMAND="echo hello world |  less -r"
+    AUTO_COMMAND_FULL="echo hello world |  less -r"
+    AUTO_COMMAND_START=11000
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$output" is_empty
+}
+
 @test 'auto-notify-send does not send notification for ignored commands with arguments' {
     for command in $AUTO_NOTIFY_IGNORE; do
         AUTO_COMMAND="somealias bar -r"
