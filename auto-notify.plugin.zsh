@@ -18,14 +18,15 @@ function _auto_notify_message() {
     local command="$1"
     local elapsed="$2"
     # Run using echo -e in order to make sure notify-send picks up new line
-    text_linux="$(echo -e "\"$command\" has completed\n(Total time: $elapsed seconds)")"
-    text_darwin="$(echo -e "\\\"$command\\\" has completed\n(Total time: $elapsed seconds)")"
+    text="$(echo -e "\"$command\" has completed\n(Total time: $elapsed seconds)")"
     platform="$(uname)"
 
     if [[ "$platform" == "Linux" ]]; then
-        notify-send "$text_linux"
+        notify-send "$text"
     elif [[ "$platform" == "Darwin" ]]; then
-        osascript -e "display notification \"$text_darwin\" with title \"Command Completed\""
+        # We need to escape quotes since we are passing a script into a command
+        text="${text//\"/\\\"}"
+        osascript -e "display notification \"$text\" with title \"Command Completed\""
     else
         printf "Unknown platform for sending notifications: $platform\n"
         printf "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/\n"
