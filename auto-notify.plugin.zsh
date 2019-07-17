@@ -7,15 +7,6 @@ export AUTO_NOTIFY_IGNORE=(
     "vim" "nvim" "less" "more" "man" "tig" "watch" "git commit" "top" "htop" "ssh" "nano"
 )
 
-function _reset_tracking() {
-    # Command start time in seconds since epoch
-    unset AUTO_COMMAND_START
-    # Full command that the user has executed after alias expansion
-    unset AUTO_COMMAND_FULL
-    # Command that the user has executed
-    unset AUTO_COMMAND
-}
-
 function _auto_notify_message() {
     local command="$1"
     local elapsed="$2"
@@ -68,13 +59,22 @@ function _auto_notify_send() {
 
     # Empty tracking so that notifications are not
     # triggered for any commands not run (e.g ctrl+C when typing)
-    _reset_tracking
+    _auto_notify_reset_tracking
 }
 
 function _auto_notify_track() {
     AUTO_COMMAND="$1"
     AUTO_COMMAND_FULL="$3"
     AUTO_COMMAND_START="$(date +"%s")"
+}
+
+function _auto_notify_reset_tracking() {
+    # Command start time in seconds since epoch
+    unset AUTO_COMMAND_START
+    # Full command that the user has executed after alias expansion
+    unset AUTO_COMMAND_FULL
+    # Command that the user has executed
+    unset AUTO_COMMAND
 }
 
 function disable_auto_notify() {
@@ -89,5 +89,5 @@ function enable_auto_notify() {
 
 autoload -Uz add-zsh-hook
 
-_reset_tracking
+_auto_notify_reset_tracking
 enable_auto_notify
