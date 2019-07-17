@@ -28,7 +28,7 @@
 }
 
 @test 'is_auto_notify_ignored - piped commands which are ignored' {
-    run _is_auto_notify_ignored "echo hello world |  less -R"
+    run _is_auto_notify_ignored "echo hello world | hexdump | less -R"
 
     assert $state equals 0
     assert "$output" same_as "yes"
