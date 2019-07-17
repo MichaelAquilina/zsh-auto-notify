@@ -6,6 +6,10 @@ ZSH Auto-Notify
 Simple zsh plugin that automatically sends out a notification when a long running task
 has completed.
 
+Useful for those commands you don't predict will take long to run or just plain forgot
+to keep track of. Leave the task running and go do something else - ``auto-notify`` will
+let you know when the task is done! :tada:
+
 * Usage_
 * Requirements_
 * Installation_
@@ -17,7 +21,7 @@ has completed.
 Usage
 -----
 
-You dont need to do anything. Once it's installed,
+You don't need to do anything. Once it's installed,
 ``zsh-auto-notify`` will let you know if a long running task has completed its work via a
 notification in your desktop environment.
 
@@ -33,7 +37,7 @@ However they would not have been tested as part of the CI test process.
 
 Supported desktop environments:
 
-* Linux X/Wayland (Requires ``notify_send`` to be installed)
+* Linux X/Wayland (Requires ``notify-send`` to be installed)
 * MacOSX
 
 Installation
