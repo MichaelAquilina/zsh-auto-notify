@@ -1,4 +1,4 @@
-export AUTO_NOTIFY_VERSION="0.2.0"
+export AUTO_NOTIFY_VERSION="0.3.0"
 
 # Threshold in seconds for when to automatically show a notification
 export AUTO_NOTIFY_THRESHOLD=10
