@@ -63,7 +63,10 @@ function _auto_notify_send() {
 }
 
 function _auto_notify_track() {
-    AUTO_COMMAND="$1"
+    # $1 is the string the user typed, but only when history is enabled
+    # $2 is a single-line, size-limited version of the command that is always available
+    # To still do something useful when history is disabled, although with reduced functionality, fall back to $2 when $1 is empty
+    AUTO_COMMAND="${1:-$2}"
     AUTO_COMMAND_FULL="$3"
     AUTO_COMMAND_START="$(date +"%s")"
 }
