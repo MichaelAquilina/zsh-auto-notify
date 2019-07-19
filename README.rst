@@ -157,13 +157,6 @@ directory of the repo.
 
 NOTE: It is required that you use a minimum zunit version of 0.8.2
 
-NOTE: The tests that run move your git configuration to a temporary
-location during the test process so that your user configuration does
-not interfere with tests. This will be restored at the end of each test
-so there is no risk in losing your settings. If for some strange reason
-zunit crashes or does not restore your git configuration automatically,
-all you need to do is run ``mv ~/.gitconfig.bak ~/.gitconfig``
-
 .. _Zplug: https://github.com/zplug/zplug
 
 .. _Antigen: https://github.com/zsh-users/antigen
