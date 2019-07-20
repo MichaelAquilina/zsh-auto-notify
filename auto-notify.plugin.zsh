@@ -86,11 +86,10 @@ function disable_auto_notify() {
 }
 
 function enable_auto_notify() {
+    autoload -Uz add-zsh-hook
     add-zsh-hook preexec _auto_notify_track
     add-zsh-hook precmd _auto_notify_send
 }
-
-autoload -Uz add-zsh-hook
 
 _auto_notify_reset_tracking
 enable_auto_notify
