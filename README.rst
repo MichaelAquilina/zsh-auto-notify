@@ -94,6 +94,18 @@ can configure this value by setting the environment variable ``AUTO_NOTIFY_THRES
     export AUTO_NOTIFY_THRESHOLD=20
 
 
+**Notification Expiration Time**
+
+You can set how long a notification sent by ``auto-notify`` will remain showing by setting the environment
+variable ``AUTO_NOTIFY_EXPIRE_TIME`` to a custom value in milliseconds. The default value is set to 8 seconds.
+NOTE: This configuration option currently only works for Linux.
+
+::
+
+    # Set notification expiry to 10 seconds
+    export AUTO_NOTIFY_EXPIRE_TIME=10000
+
+
 **Ignored Commands**
 
 A number of commands do not get notifications for long running times due to their nature (e.g. ``watch`` or ``man``).

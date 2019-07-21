@@ -4,7 +4,9 @@
     load "../auto-notify.plugin.zsh"
 
     function notify-send {
-        echo - "Notification: $@"
+        echo - "Notification Title: $1"
+        echo - "Notification Body: $2"
+        echo - "${@:3}"
     }
 
     function uname {
@@ -80,11 +82,14 @@
     AUTO_COMMAND="f bar -r"
     AUTO_COMMAND_FULL="foo bar -r"
     AUTO_COMMAND_START=11080
+    AUTO_NOTIFY_EXPIRE_TIME=15000
     run _auto_notify_send
 
     assert $state equals 0
-    assert "$lines[1]" same_as 'Notification: "f bar -r" has completed'
-    assert "$lines[2]" same_as "(Total time: 20 seconds)"
+    assert "$lines[1]" same_as 'Notification Title: "f bar -r" Completed'
+    assert "$lines[2]" same_as "Notification Body: Total time: 20 seconds"
+    assert "$lines[3]" same_as "Exit code: 0"
+    assert "$lines[4]" same_as "--urgency=normal --expire-time=15000"
 }
 
 @test 'auto-notify-send sends notification on MacOSX' {
@@ -97,14 +102,14 @@
     }
 
     function osascript {
-        echo - $@
+        echo - "${@}"
     }
 
     run _auto_notify_send
 
     assert $state equals 0
-    assert "$lines[1]" same_as '-e display notification "\"f bar -r\" has completed'
-    assert "$lines[2]" same_as '(Total time: 20 seconds)" with title "Command Completed"'
+    assert "$lines[1]" same_as '-e display notification "Total time: 20 seconds'
+    assert "$lines[2]" same_as 'Exit code: 0" with title "\"f bar -r\" Completed"'
 }
 
 @test 'auto-notify-send sends warning on unsupported platform' {
