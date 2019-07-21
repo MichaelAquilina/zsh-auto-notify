@@ -1,5 +1,7 @@
 export AUTO_NOTIFY_VERSION="0.3.0"
 
+# Time it takes for a notification to expire
+export AUTO_NOTIFY_EXPIRE_TIME=8000
 # Threshold in seconds for when to automatically show a notification
 export AUTO_NOTIFY_THRESHOLD=10
 # List of commands/programs to ignore sending notifications for
@@ -10,16 +12,23 @@ export AUTO_NOTIFY_IGNORE=(
 function _auto_notify_message() {
     local command="$1"
     local elapsed="$2"
+    local exit_code="$3"
     local platform="$(uname)"
     # Run using echo -e in order to make sure notify-send picks up new line
-    local text="$(echo -e "\"$command\" has completed\n(Total time: $elapsed seconds)")"
+    local title="\"$command\" Completed"
+    local text="$(echo -e "Total time: $elapsed seconds\nExit code: $exit_code")"
 
     if [[ "$platform" == "Linux" ]]; then
-        notify-send "$text"
+        local urgency="normal"
+        if [[ "$exit_code" != "0" ]]; then
+            urgency="critical"
+        fi
+        notify-send "$title" "$text" "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
     elif [[ "$platform" == "Darwin" ]]; then
         # We need to escape quotes since we are passing a script into a command
         text="${text//\"/\\\"}"
-        osascript -e "display notification \"$text\" with title \"Command Completed\""
+        title="${title//\"/\\\"}"
+        osascript -e "display notification \"$text\" with title \"$title\""
     else
         printf "Unknown platform for sending notifications: $platform\n"
         printf "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/\n"
@@ -44,6 +53,9 @@ function _is_auto_notify_ignored() {
 }
 
 function _auto_notify_send() {
+    # Immediately store the exit code before it goes away
+    local exit_code="$?"
+
     if [[ -z "$AUTO_COMMAND" && -z "$AUTO_COMMAND_START" ]]; then
         return
     fi
@@ -53,7 +65,7 @@ function _auto_notify_send() {
         let "elapsed = current - AUTO_COMMAND_START"
 
         if [[ $elapsed -gt $AUTO_NOTIFY_THRESHOLD ]]; then
-            _auto_notify_message "$AUTO_COMMAND" "$elapsed"
+            _auto_notify_message "$AUTO_COMMAND" "$elapsed" "$exit_code"
         fi
     fi
 
