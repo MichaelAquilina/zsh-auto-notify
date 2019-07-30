@@ -126,3 +126,17 @@
     assert "$lines[1]" same_as "Unknown platform for sending notifications: Hal9000"
     assert "$lines[2]" same_as "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/"
 }
+
+@test 'auto-notify-send sends custom message' {
+    AUTO_COMMAND="doom -i"
+    AUTO_COMMAND_FULL="doom -i"
+    AUTO_COMMAND_START=11055
+    AUTO_NOTIFY_TITLE="%command has completed in %elapseds yo"
+    AUTO_NOTIFY_BODY="%command exited with code %exit_code"
+
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$lines[1]" same_as 'Notification Title: doom -i has completed in 45s yo'
+    assert "$lines[2]" same_as "Notification Body: doom -i exited with code 0"
+}
