@@ -1,0 +1,26 @@
+#!/usr/bin/env zunit
+
+@setup {
+    load "../auto-notify.plugin.zsh"
+}
+
+@test 'auto-notify-format no parameters' {
+    run _auto_notify_format "Hello World" "foo" "bar" "baz"
+
+    assert $state equals 0
+    assert "$output" same_as "Hello World"
+}
+
+@test 'auto-notify-format correct formatting 1' {
+    run _auto_notify_format "Command run is - %command (%elapsed seconds)" "zypper up" "10" "0"
+
+    assert $state equals 0
+    assert "$output" same_as "Command run is - zypper up (10 seconds)"
+}
+
+@test 'auto-notify-format correct formatting 2' {
+    run _auto_notify_format "Exit code is %exit_code!" "zypper up" "10" "-101"
+
+    assert $state equals 0
+    assert "$output" same_as "Exit code is -101!"
+}

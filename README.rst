@@ -93,6 +93,22 @@ can configure this value by setting the environment variable ``AUTO_NOTIFY_THRES
     # Set threshold to 20seconds
     export AUTO_NOTIFY_THRESHOLD=20
 
+**Notification Formatting**
+
+You can change the formatting of notifications by setting the values for ``AUTO_NOTIFY_TITLE`` and
+``AUTO_NOTIFY_BODY``. When writing these values, the following variables will be replaced according to
+the data that ``auto-notify`` has detected:
+
+* ``%command`` - the command that the user executed
+* ``%elapsed`` - number of seconds that elapsed
+* ``%exit_code`` - the exit code of the command that was executed
+
+An example of how these values can be set is shown below:
+
+::
+
+    export AUTO_NOTIFY_TITLE="Hey! %command has just finished"
+    export AUTO_NOTIFY_BODY="It completed in %elapsed seconds with exit code %exit_code"
 
 **Notification Expiration Time**
 

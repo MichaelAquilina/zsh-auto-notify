@@ -1,4 +1,4 @@
-export AUTO_NOTIFY_VERSION="0.4.0"
+export AUTO_NOTIFY_VERSION="0.5.0"
 
 # Time it takes for a notification to expire
 export AUTO_NOTIFY_EXPIRE_TIME=8000
@@ -9,26 +9,43 @@ export AUTO_NOTIFY_IGNORE=(
     "vim" "nvim" "less" "more" "man" "tig" "watch" "git commit" "top" "htop" "ssh" "nano"
 )
 
+function _auto_notify_format() {
+    local MESSAGE="$1"
+    local command="$2"
+    local elapsed="$3"
+    local exit_code="$4"
+    MESSAGE="${MESSAGE//\%command/$command}"
+    MESSAGE="${MESSAGE//\%elapsed/$elapsed}"
+    MESSAGE="${MESSAGE//\%exit_code/$exit_code}"
+    printf "%s" "$MESSAGE"
+}
+
 function _auto_notify_message() {
     local command="$1"
     local elapsed="$2"
     local exit_code="$3"
     local platform="$(uname)"
     # Run using echo -e in order to make sure notify-send picks up new line
-    local title="\"$command\" Completed"
-    local text="$(echo -e "Total time: $elapsed seconds\nExit code: $exit_code")"
+    local DEFAULT_TITLE="\"%command\" Completed"
+    local DEFAULT_BODY="$(echo -e "Total time: %elapsed seconds\nExit code: %exit_code")"
+
+    local title="${AUTO_NOTIFY_TITLE:-$DEFAULT_TITLE}"
+    local text="${AUTO_NOTIFY_BODY:-$DEFAULT_BODY}"
+
+    title="$(_auto_notify_format "$title" "$command" "$elapsed" "$exit_code")"
+    body="$(_auto_notify_format "$text" "$command" "$elapsed" "$exit_code")"
 
     if [[ "$platform" == "Linux" ]]; then
         local urgency="normal"
         if [[ "$exit_code" != "0" ]]; then
             urgency="critical"
         fi
-        notify-send "$title" "$text" "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
+        notify-send "$title" "$body" "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
     elif [[ "$platform" == "Darwin" ]]; then
         # We need to escape quotes since we are passing a script into a command
-        text="${text//\"/\\\"}"
+        body="${body//\"/\\\"}"
         title="${title//\"/\\\"}"
-        osascript -e "display notification \"$text\" with title \"$title\""
+        osascript -e "display notification \"$body\" with title \"$title\""
     else
         printf "Unknown platform for sending notifications: $platform\n"
         printf "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/\n"
