@@ -58,7 +58,7 @@ function _is_auto_notify_ignored() {
     local command_list=("${(@s/|/)command}")
     local target_command="${command_list[-1]}"
     # Remove leading whitespace
-    target_command="$(echo "$target_command" | sed -e 's/^ *//')}"
+    target_command="$(echo "$target_command" | sed -e 's/^ *//')"
 
     for ignore in $AUTO_NOTIFY_IGNORE; do
         if [[ "$target_command" == "$ignore"* ]]; then
