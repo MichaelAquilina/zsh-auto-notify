@@ -1,6 +1,10 @@
 Changelog for zsh-auto-notify
 =============================
 
+0.5.0
+-----
+* Support changing notification title and body using AUTO_NOTIFY_TITLE and AUTO_NOTIFY_BODY
+
 0.4.0
 -----
 * Add `AUTO_NOTIFY_EXPIRE_TIME` configuration option
