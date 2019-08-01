@@ -1,6 +1,10 @@
 Changelog for zsh-auto-notify
 =============================
 
+0.5.1
+-----
+* Improved handling of MacOS notifications via #16 (Thanks @dmitmel!)
+
 0.5.0
 -----
 * Support changing notification title and body using AUTO_NOTIFY_TITLE and AUTO_NOTIFY_BODY
