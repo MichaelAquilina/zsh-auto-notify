@@ -42,10 +42,11 @@ function _auto_notify_message() {
         fi
         notify-send "$title" "$body" "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
     elif [[ "$platform" == "Darwin" ]]; then
-        # We need to escape quotes since we are passing a script into a command
-        body="${body//\"/\\\"}"
-        title="${title//\"/\\\"}"
-        osascript -e "display notification \"$body\" with title \"$title\""
+        osascript \
+          -e 'on run argv' \
+          -e 'display notification (item 1 of argv) with title (item 2 of argv)' \
+          -e 'end run' \
+          "$body" "$title"
     else
         printf "Unknown platform for sending notifications: $platform\n"
         printf "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/\n"
