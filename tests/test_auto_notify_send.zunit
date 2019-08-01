@@ -92,7 +92,7 @@
     assert "$lines[4]" same_as "--urgency=normal --expire-time=15000"
 }
 
-@test 'auto-notify-send sends notification on MacOSX' {
+@test 'auto-notify-send sends notification on macOS' {
     AUTO_COMMAND="f bar -r"
     AUTO_COMMAND_FULL="foo bar -r"
     AUTO_COMMAND_START=11080
