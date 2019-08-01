@@ -108,8 +108,8 @@
     run _auto_notify_send
 
     assert $state equals 0
-    assert "$lines[1]" same_as '-e display notification "Total time: 20 seconds'
-    assert "$lines[2]" same_as 'Exit code: 0" with title "\"f bar -r\" Completed"'
+    assert "$lines[1]" same_as '-e on run argv -e display notification (item 1 of argv) with title (item 2 of argv) -e end run Total time: 20 seconds'
+    assert "$lines[2]" same_as 'Exit code: 0 "f bar -r" Completed'
 }
 
 @test 'auto-notify-send sends warning on unsupported platform' {
