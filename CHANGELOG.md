@@ -1,6 +1,10 @@
 Changelog for zsh-auto-notify
 =============================
 
+0.6.0
+-----
+* Display warning and disable auto-notify if notify-send is not installed (Linux only)
+
 0.5.1
 -----
 * Improved handling of MacOS notifications via #16 (Thanks @dmitmel!)
