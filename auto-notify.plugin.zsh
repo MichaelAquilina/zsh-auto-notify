@@ -61,13 +61,28 @@ function _is_auto_notify_ignored() {
     # Remove leading whitespace
     target_command="$(echo "$target_command" | sed -e 's/^ *//')"
 
-    for ignore in $AUTO_NOTIFY_IGNORE; do
-        if [[ "$target_command" == "$ignore"* ]]; then
-            print "yes"
-            return
-        fi
-    done
-    print "no"
+    # If AUTO_NOTIFY_WHITELIST is defined, then auto-notify will ignore
+    # any item not defined in the white list
+    # Otherwise - the alternative (default) approach is used where the
+    # AUTO_NOTIFY_IGNORE blacklist is used to ignore commands
+
+    if [[ -n "$AUTO_NOTIFY_WHITELIST" ]]; then
+        for allowed in $AUTO_NOTIFY_WHITELIST; do
+            if [[ "$target_command" == "$allowed"* ]]; then
+                print "no"
+                return
+            fi
+        done
+        print "yes"
+    else
+        for ignore in $AUTO_NOTIFY_IGNORE; do
+            if [[ "$target_command" == "$ignore"* ]]; then
+                print "yes"
+                return
+            fi
+        done
+        print "no"
+    fi
 }
 
 function _auto_notify_send() {

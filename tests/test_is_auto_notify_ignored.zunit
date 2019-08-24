@@ -33,3 +33,21 @@
     assert $state equals 0
     assert "$output" same_as "yes"
 }
+
+@test 'is_auto_notify_ignored - AUTO_NOTIFY_WHITELIST disallowed' {
+    AUTO_NOTIFY_WHITELIST="foobar"
+
+    run _is_auto_notify_ignored "boom baz"
+
+    assert $state equals 0
+    assert "$output" same_as "yes"
+}
+
+@test 'is_auto_notify_ignored - AUTO_NOTIFY_WHITELIST allowed' {
+    AUTO_NOTIFY_WHITELIST="foobar"
+
+    run _is_auto_notify_ignored "foobar baz"
+
+    assert $state equals 0
+    assert "$output" same_as "no"
+}

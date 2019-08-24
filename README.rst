@@ -143,6 +143,17 @@ a new array.
     # redefine what is ignored by auto-notify
     export AUTO_NOTIFY_IGNORE=("docker" "man" "sleep")
 
+**Using a Whitelist to ignore commands**
+
+If you wish to use a whitelist approach instead of the default blacklist approach used by ``AUTO_NOTIFY_IGNORE``,
+you can do so by defining the environment variable ``AUTO_NOTIFY_WHITELIST`` with the elements you wish to
+allow ``auto-notify`` to track and send notifications for. NOTE: If ``AUTO_NOTIFY_WHITELIST`` is defined,
+then all the values in ``AUTO_NOTIFY_IGNORE`` are not used.
+
+::
+
+    export AUTO_NOTIFY_WHITELIST=("apt-get" "docker")
+
 Temporarily Disabling Notifications
 -----------------------------------
 
