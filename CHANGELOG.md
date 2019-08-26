@@ -1,6 +1,10 @@
 Changelog for zsh-auto-notify
 =============================
 
+0.7.0
+-----
+* Allow alternate `AUTO_NOTIFY_WHITELIST` for specifying commands to allow
+
 0.6.0
 -----
 * Display warning and disable auto-notify if notify-send is not installed (Linux only)
