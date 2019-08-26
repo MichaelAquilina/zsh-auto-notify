@@ -51,3 +51,12 @@
     assert $state equals 0
     assert "$output" same_as "no"
 }
+
+@test 'is_auto_notify_ignored - AUTO_NOTIFY_WHITELIST allowed with sudo' {
+    AUTO_NOTIFY_WHITELIST="foobar"
+
+    run _is_auto_notify_ignored "sudo foobar baz"
+
+    assert $state equals 0
+    assert "$output" same_as "no"
+}

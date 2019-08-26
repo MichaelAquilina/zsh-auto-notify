@@ -61,6 +61,11 @@ function _is_auto_notify_ignored() {
     # Remove leading whitespace
     target_command="$(echo "$target_command" | sed -e 's/^ *//')"
 
+    # Remove sudo prefix from command if detected
+    if [[ "$target_command" == "sudo "* ]]; then
+        target_command="${target_command/sudo /}"
+    fi
+
     # If AUTO_NOTIFY_WHITELIST is defined, then auto-notify will ignore
     # any item not defined in the white list
     # Otherwise - the alternative (default) approach is used where the
