@@ -9,6 +9,9 @@ export AUTO_NOTIFY_IGNORE=(
     "vim" "nvim" "less" "more" "man" "tig" "watch" "git commit" "top" "htop" "ssh" "nano"
 )
 
+# Override notification urgency
+# export AUTO_NOTIFY_URGENCY="normal"
+
 function _auto_notify_format() {
     local MESSAGE="$1"
     local command="$2"
@@ -37,8 +40,12 @@ function _auto_notify_message() {
 
     if [[ "$platform" == "Linux" ]]; then
         local urgency="normal"
-        if [[ "$exit_code" != "0" ]]; then
-            urgency="critical"
+        if [[ -z $AUTO_NOTIFY_URGENCY ]]; then
+            if [[ "$exit_code" != "0" ]]; then
+                urgency="critical"
+            fi
+        else
+            urgency=$AUTO_NOTIFY_URGENCY
         fi
         notify-send "$title" "$body" --app-name=zsh "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
     elif [[ "$platform" == "Darwin" ]]; then
