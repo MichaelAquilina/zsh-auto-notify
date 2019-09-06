@@ -1,6 +1,10 @@
 Changelog for zsh-auto-notify
 =============================
 
+0.8.0
+-----
+* Change notify-send application title to `zsh`
+
 0.7.0
 -----
 * Allow alternate `AUTO_NOTIFY_WHITELIST` for specifying commands to allow
