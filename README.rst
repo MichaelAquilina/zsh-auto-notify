@@ -124,12 +124,13 @@ NOTE: This configuration option currently only works for Linux.
     
 **Notification Urgency Level**
 
-By default non zero exit codes lead to critical notifications.
-On some systems (KDE) critical notifications will never expire.
-You can override notification urgency by setting the environment variable ``"AUTO_NOTIFY_URGENCY"`` to ``"low"``, ``"normal"``, or ``"critical``.
+By default non zero exit codes lead to notifications marked as critical.
+On some systems (e.g. KDE) critical notifications are not desirable as they will never expire.
+You can override notification urgency by setting the environment variable ``"AUTO_NOTIFY_URGENCY"`` to ``low``, ``normal``, or ``critical``.
 NOTE: This configuration option currently only works for Linux.
 
 ::
+
     # Force all notifications to have normal urgency
     export AUTO_NOTIFY_URGENCY="normal"
 
