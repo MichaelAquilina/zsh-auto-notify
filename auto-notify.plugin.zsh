@@ -1,4 +1,4 @@
-export AUTO_NOTIFY_VERSION="0.7.0"
+export AUTO_NOTIFY_VERSION="0.8.0"
 
 # Time it takes for a notification to expire
 export AUTO_NOTIFY_EXPIRE_TIME=8000
@@ -40,7 +40,7 @@ function _auto_notify_message() {
         if [[ "$exit_code" != "0" ]]; then
             urgency="critical"
         fi
-        notify-send "$title" "$body" "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
+        notify-send "$title" "$body" --app-name=zsh "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
     elif [[ "$platform" == "Darwin" ]]; then
         osascript \
           -e 'on run argv' \
