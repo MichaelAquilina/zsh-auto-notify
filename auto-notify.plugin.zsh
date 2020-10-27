@@ -53,6 +53,14 @@ function _auto_notify_message() {
     fi
 }
 
+function _auto_notify_active_window_id () {
+    if [[ -n $DISPLAY ]] ; then
+        xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}'
+        return
+    fi
+    echo nowindowid
+}
+
 function _is_auto_notify_ignored() {
     local command="$1"
     # split the command if its been piped one or more times
@@ -101,8 +109,12 @@ function _auto_notify_send() {
     if [[ "$(_is_auto_notify_ignored "$AUTO_COMMAND_FULL")" == "no" ]]; then
         local current="$(date +"%s")"
         let "elapsed = current - AUTO_COMMAND_START"
+        local current_window="$(_auto_notify_active_window_id)"
 
-        if [[ $elapsed -gt $AUTO_NOTIFY_THRESHOLD ]]; then
+        if [[ $current_window != $AUTO_NOTIFY_ACTIVE_WINDOW_ID ]] ||
+                [[ ! -z "$AUTO_NOTIFY_IGNORE_WINDOW_CHECK" ]] ||
+                [[ $current_window == "nowindowid" ]] &&
+                [[ $elapsed -gt $AUTO_NOTIFY_THRESHOLD ]]; then
             _auto_notify_message "$AUTO_COMMAND" "$elapsed" "$exit_code"
         fi
     fi
@@ -119,6 +131,7 @@ function _auto_notify_track() {
     AUTO_COMMAND="${1:-$2}"
     AUTO_COMMAND_FULL="$3"
     AUTO_COMMAND_START="$(date +"%s")"
+    AUTO_NOTIFY_ACTIVE_WINDOW_ID="$(_auto_notify_active_window_id)"
 }
 
 function _auto_notify_reset_tracking() {
@@ -128,6 +141,8 @@ function _auto_notify_reset_tracking() {
     unset AUTO_COMMAND_FULL
     # Command that the user has executed
     unset AUTO_COMMAND
+    # window id of where the command was executed
+    unset AUTO_NOTIFY_ACTIVE_WINDOW_ID
 }
 
 function disable_auto_notify() {
