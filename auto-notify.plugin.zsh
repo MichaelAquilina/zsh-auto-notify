@@ -1,13 +1,27 @@
 export AUTO_NOTIFY_VERSION="0.8.0"
 
 # Time it takes for a notification to expire
-export AUTO_NOTIFY_EXPIRE_TIME=8000
+[[ -z "$AUTO_NOTIFY_EXPIRE_TIME" ]] &&
+    export AUTO_NOTIFY_EXPIRE_TIME=8000
 # Threshold in seconds for when to automatically show a notification
-export AUTO_NOTIFY_THRESHOLD=10
+[[ -z "$AUTO_NOTIFY_THRESHOLD" ]] &&
+    export AUTO_NOTIFY_THRESHOLD=10
 # List of commands/programs to ignore sending notifications for
-export AUTO_NOTIFY_IGNORE=(
-    "vim" "nvim" "less" "more" "man" "tig" "watch" "git commit" "top" "htop" "ssh" "nano"
-)
+[[ -z "$AUTO_NOTIFY_IGNORE" ]] &&
+    export AUTO_NOTIFY_IGNORE=(
+        'vim'
+        'nvim'
+        'less'
+        'more'
+        'man'
+        'tig'
+        'watch'
+        'git commit'
+        'top'
+        'htop'
+        'ssh'
+        'nano'
+    )
 
 function _auto_notify_format() {
     local MESSAGE="$1"
