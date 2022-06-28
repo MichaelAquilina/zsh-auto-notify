@@ -66,9 +66,7 @@ Zgen_
 
 Fig_
 
-Fig adds apps, shortcuts, and autocomplete to your existing terminal.
-
-Install ``zsh-auto-notify`` in just one click.
+Install ``zsh-auto-notify`` with Fig in just one click.
 
 .. image:: https://fig.io/badges/install-with-fig.svg
   :target: https://fig.io/plugins/other/zsh-auto-notify_MichaelAquilina
