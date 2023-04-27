@@ -146,6 +146,25 @@ function _auto_notify_reset_tracking() {
     unset AUTO_COMMAND
 }
 
+function _has_notification_service() {
+    # Check dbus-send command exists
+    if ! type dbus-send > /dev/null; then
+        # perhaps it should run notify-send
+        print "unknown"
+        return
+    fi
+    local interfaces="$(dbus-send --session \
+          --type=method_call \
+          --print-reply \
+          --dest=org.freedesktop.DBus \
+          /org/freedesktop/DBus org.freedesktop.DBus.ListNames)"
+    if [[ $interfaces == *"org.freedesktop.Notifications"* ]]; then
+        print "yes"
+    else
+        print "no"
+    fi
+}
+
 function disable_auto_notify() {
     add-zsh-hook -D preexec _auto_notify_track
     add-zsh-hook -D precmd _auto_notify_send
@@ -164,6 +183,8 @@ platform="$(uname)"
 if [[ "$platform" == "Linux" ]] && ! type notify-send > /dev/null; then
     printf "'notify-send' must be installed for zsh-auto-notify to work\n"
     printf "Please install it with your relevant package manager\n"
+elif [[ "$platform" == "Linux" ]] && [[ "$(_has_notification_service)" == "no" ]]; then
+    # do not enable
 else
     enable_auto_notify
 fi
