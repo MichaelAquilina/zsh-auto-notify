@@ -51,10 +51,12 @@ function _auto_notify_message() {
 
     if [[ "$platform" == "Linux" ]]; then
         local urgency="normal"
+        local transient="--transient"
         if [[ "$exit_code" != "0" ]]; then
             urgency="critical"
+            transient=""
         fi
-        notify-send "$title" "$body" --app-name=zsh "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
+        notify-send "$title" "$body" --app-name=zsh "$transient" "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
     elif [[ "$platform" == "Darwin" ]]; then
         osascript \
           -e 'on run argv' \
