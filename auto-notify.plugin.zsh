@@ -42,12 +42,15 @@ function _auto_notify_message() {
     # Run using echo -e in order to make sure notify-send picks up new line
     local DEFAULT_TITLE="\"%command\" Completed"
     local DEFAULT_BODY="$(echo -e "Total time: %elapsed seconds\nExit code: %exit_code")"
+    local DEFAULT_USE_SOUND=0
 
     local title="${AUTO_NOTIFY_TITLE:-$DEFAULT_TITLE}"
     local text="${AUTO_NOTIFY_BODY:-$DEFAULT_BODY}"
+    local use_sound=${AUTO_NOTIFY_USE_SOUND:=$DEFAULT_USE_SOUND}
 
     title="$(_auto_notify_format "$title" "$command" "$elapsed" "$exit_code")"
     body="$(_auto_notify_format "$text" "$command" "$elapsed" "$exit_code")"
+    [[ $use_sound -eq 1 ]] && sound='sound name ""'
 
     if [[ "$platform" == "Linux" ]]; then
         local urgency="normal"
@@ -60,7 +63,7 @@ function _auto_notify_message() {
     elif [[ "$platform" == "Darwin" ]]; then
         osascript \
           -e 'on run argv' \
-          -e 'display notification (item 1 of argv) with title (item 2 of argv)' \
+          -e "display notification (item 1 of argv) with title (item 2 of argv) $sound" \
           -e 'end run' \
           "$body" "$title"
     else

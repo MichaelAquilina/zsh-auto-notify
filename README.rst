@@ -118,6 +118,15 @@ An example of how these values can be set is shown below:
     export AUTO_NOTIFY_TITLE="Hey! %command has just finished"
     export AUTO_NOTIFY_BODY="It completed in %elapsed seconds with exit code %exit_code"
 
+**Notificaton Sound**
+
+The notification can also trigger playing a short sound by changing ``AUTO_NOTIFY_USE_SOUND``.
+NOTE: This configuration option currently only works for macOS.
+
+::
+    # Enable using sound (default: 0)
+    export AUTO_NOTIFY_USE_SOUND=1
+
 **Notification Expiration Time**
 
 You can set how long a notification sent by ``auto-notify`` will remain showing by setting the environment
