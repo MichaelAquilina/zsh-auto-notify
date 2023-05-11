@@ -89,7 +89,7 @@
     assert "$lines[1]" same_as 'Notification Title: "f bar -r" Completed'
     assert "$lines[2]" same_as "Notification Body: Total time: 20 seconds"
     assert "$lines[3]" same_as "Exit code: 0"
-    assert "$lines[4]" same_as "--app-name=zsh --urgency=normal --expire-time=15000"
+    assert "$lines[4]" same_as "--app-name=zsh --transient --urgency=normal --expire-time=15000"
 }
 
 @test 'auto-notify-send sends notification on macOS' {
