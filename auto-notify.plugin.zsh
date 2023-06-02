@@ -1,4 +1,4 @@
-export AUTO_NOTIFY_VERSION="0.8.0"
+export AUTO_NOTIFY_VERSION="0.8.1"
 
 # Time it takes for a notification to expire
 [[ -z "$AUTO_NOTIFY_EXPIRE_TIME" ]] &&
@@ -51,7 +51,7 @@ function _auto_notify_message() {
 
     if [[ "$platform" == "Linux" ]]; then
         local urgency="normal"
-        local transient="--transient"
+        local transient="--hint=int:transient:1"
         if [[ "$exit_code" != "0" ]]; then
             urgency="critical"
             transient=""
