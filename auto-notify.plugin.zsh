@@ -22,6 +22,12 @@ export AUTO_NOTIFY_VERSION="0.8.1"
         'ssh'
         'nano'
     )
+# Default notification urgency for successful exit codes
+[[ -z "$AUTO_NOTIFY_URGENCY_ON_SUCCESS" ]] &&
+    export AUTO_NOTIFY_URGENCY_ON_SUCCESS="normal"
+# Default notification urgency for error exit codes
+[[ -z "$AUTO_NOTIFY_URGENCY_ON_ERROR" ]] &&
+    export AUTO_NOTIFY_URGENCY_ON_ERROR="critical"
 
 function _auto_notify_format() {
     local MESSAGE="$1"
@@ -50,10 +56,10 @@ function _auto_notify_message() {
     body="$(_auto_notify_format "$text" "$command" "$elapsed" "$exit_code")"
 
     if [[ "$platform" == "Linux" ]]; then
-        local urgency="normal"
+        local urgency="$AUTO_NOTIFY_URGENCY_ON_SUCCESS"
         local transient="--hint=int:transient:1"
         if [[ "$exit_code" != "0" ]]; then
-            urgency="critical"
+            urgency="$AUTO_NOTIFY_URGENCY_ON_ERROR"
             transient=""
         fi
         notify-send "$title" "$body" --app-name=zsh $transient "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
