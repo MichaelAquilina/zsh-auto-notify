@@ -23,6 +23,12 @@ export AUTO_NOTIFY_VERSION="0.10.2"
         'ssh'
         'nano'
     )
+# Default notification urgency for successful exit codes
+[[ -z "$AUTO_NOTIFY_URGENCY_ON_SUCCESS" ]] &&
+    export AUTO_NOTIFY_URGENCY_ON_SUCCESS="normal"
+# Default notification urgency for error exit codes
+[[ -z "$AUTO_NOTIFY_URGENCY_ON_ERROR" ]] &&
+    export AUTO_NOTIFY_URGENCY_ON_ERROR="critical"
 
 function _auto_notify_format() {
     local MESSAGE="$1"
@@ -51,14 +57,14 @@ function _auto_notify_message() {
     body="$(_auto_notify_format "$text" "$command" "$elapsed" "$exit_code")"
 
     if [[ "$platform" == "Linux" ]]; then
-        local urgency="normal"
+        local urgency="$AUTO_NOTIFY_URGENCY_ON_SUCCESS"
         local transient="--hint=int:transient:1"
         local icon=${AUTO_NOTIFY_ICON_SUCCESS:-""}
         # Exit code 130 is returned when a process is terminated with SIGINT.
         # Since the user is already interacting with the program, there is no
         # need to make the notification persistent.
         if [[ "$exit_code" != "0" ]] && [[ "$exit_code" != "130" ]]; then
-            urgency="critical"
+            urgency="$AUTO_NOTIFY_URGENCY_ON_ERROR"
             transient=""
             icon=${AUTO_NOTIFY_ICON_FAILURE:-""}
         fi
