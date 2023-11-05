@@ -129,6 +129,17 @@ NOTE: This configuration option currently only works for Linux.
     # Set notification expiry to 10 seconds
     export AUTO_NOTIFY_EXPIRE_TIME=10000
 
+**Notification Urgency Level**
+
+By default, commands that exit successfully (with code 0) will send out a notification with the urgency level of "normal", while commands that exit with an error (code > 0), will use level "critical".
+On some systems (e.g. KDE or Gnome) critical notifications are not desirable as they might never expire.
+You can override notification urgency levels by setting the appropriate environment variables ``AUTO_NOTIFY_URGENCY_ON_SUCCESS`` or ``AUTO_NOTIFY_URGENCY_ON_ERROR`` to either ``low``, ``normal``, or ``critical``.
+NOTE: This configuration option currently only works for Linux.
+
+::
+
+    # Set notification urgency level on error to normal
+    export AUTO_NOTIFY_URGENCY_ON_ERROR="normal"
 
 **Ignored Commands**
 
