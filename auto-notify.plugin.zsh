@@ -77,6 +77,12 @@ function _is_auto_notify_ignored() {
     # Remove leading whitespace
     target_command="$(echo "$target_command" | sed -e 's/^ *//')"
 
+    # If the command is being run over SSH, then ignore it
+    if [[ -n ${SSH_CLIENT-} || -n ${SSH_TTY-} || -n ${SSH_CONNECTION-} ]]; then
+        print "yes"
+        return
+    fi
+
     # Remove sudo prefix from command if detected
     if [[ "$target_command" == "sudo "* ]]; then
         target_command="${target_command/sudo /}"
