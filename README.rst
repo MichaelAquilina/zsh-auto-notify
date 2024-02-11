@@ -162,6 +162,15 @@ then all the values in ``AUTO_NOTIFY_IGNORE`` are not used.
 
     export AUTO_NOTIFY_WHITELIST=("apt-get" "docker")
 
+**Ignoring Window Check**
+
+By default the notification only shows if the active window is not the same as the the one that the command was run
+in when the command finishes. If you wish to skip window checking, set ``AUTO_NOTIFY_IGNORE_WINDOW_CHECK``.
+
+::
+
+   export AUTO_NOTIFY_IGNORE_WINDOW_CHECK=true
+
 Temporarily Disabling Notifications
 -----------------------------------
 
