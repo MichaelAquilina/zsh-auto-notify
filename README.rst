@@ -162,6 +162,20 @@ then all the values in ``AUTO_NOTIFY_IGNORE`` are not used.
 
     export AUTO_NOTIFY_WHITELIST=("apt-get" "docker")
 
+**Notification Sound**
+
+You can play sound for the notification by setting the environment variable ``AUTO_NOTIFY_SOUND``.
+For Linux, you can use any sound with absolute path. For instance, Ubuntu 22.04 provides some in /usr/share/sounds.
+For macOS, you can use filename of the sound in /System/Library/Sounds directory.
+Notice that the letter case is important and extension is skipped.
+
+::
+
+    # example for macOS
+    export AUTO_NOTIFY_SOUND=Frog
+    # example for Linux
+    export AUTO_NOTIFY_SOUND=/usr/share/sounds/Yaru/stereo/bell.oga
+
 Temporarily Disabling Notifications
 -----------------------------------
 

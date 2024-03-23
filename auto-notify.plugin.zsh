@@ -57,12 +57,22 @@ function _auto_notify_message() {
             transient=""
         fi
         notify-send "$title" "$body" --app-name=zsh $transient "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
+        if [[ -n "$AUTO_NOTIFY_SOUND" ]]; then
+            paplay "$AUTO_NOTIFY_SOUND"
+        fi
+
     elif [[ "$platform" == "Darwin" ]]; then
-        osascript \
-          -e 'on run argv' \
-          -e 'display notification (item 1 of argv) with title (item 2 of argv)' \
-          -e 'end run' \
-          "$body" "$title"
+        notification_command="display notification (item 1 of argv) with title (item 2 of argv)"
+        notification_body=($body $title)
+        if [[ ! -z "$AUTO_NOTIFY_SOUND" ]]; then
+            notification_command+=" sound name (item 3 of argv)"
+            notification_body+=("$AUTO_NOTIFY_SOUND")
+        fi
+         osascript \
+              -e 'on run argv' \
+              -e ${notification_command[@]} \
+              -e 'end run' \
+              ${notification_body[@]}
     else
         printf "Unknown platform for sending notifications: $platform\n"
         printf "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/\n"
