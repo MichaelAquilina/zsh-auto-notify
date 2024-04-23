@@ -1,4 +1,4 @@
-export AUTO_NOTIFY_VERSION="0.8.2"
+export AUTO_NOTIFY_VERSION="0.8.1"
 
 # Time it takes for a notification to expire
 [[ -z "$AUTO_NOTIFY_EXPIRE_TIME" ]] &&
