@@ -1,6 +1,10 @@
 Changelog for zsh-auto-notify
 =============================
 
+0.10.0
+-----
+* Allow specifying an icon with notify-send backends
+
 0.8.0
 -----
 * Change notify-send application title to `zsh`

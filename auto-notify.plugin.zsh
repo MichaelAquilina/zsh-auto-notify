@@ -1,4 +1,4 @@
-export AUTO_NOTIFY_VERSION="0.8.1"
+export AUTO_NOTIFY_VERSION="0.10.0"
 
 # Time it takes for a notification to expire
 [[ -z "$AUTO_NOTIFY_EXPIRE_TIME" ]] &&
@@ -63,8 +63,8 @@ function _auto_notify_message() {
 	if [[ -n "$icon" ]]; then
 		icon_arg="--icon=$icon"
 	fi
-	
-        notify-send "$title" "$body" --app-name=zsh $transient "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME" "$icon_arg" 
+
+        notify-send "$title" "$body" --app-name=zsh $transient "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME" "$icon_arg"
     elif [[ "$platform" == "Darwin" ]]; then
         osascript \
           -e 'on run argv' \
