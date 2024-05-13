@@ -1,6 +1,10 @@
 Changelog for zsh-auto-notify
 =============================
 
+0.10.2
+------
+* Use preferable array argument expansion for flexible parameters
+
 0.10.1
 ------
 * Fix regression where not setting icon on Linux would cause issues (#59 #58)
