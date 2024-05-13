@@ -59,11 +59,13 @@ function _auto_notify_message() {
             transient=""
             icon=${AUTO_NOTIFY_ICON_FAILURE:-""}
         fi
+
+        local arguments=("$title" "$body" "--app-name=zsh" "$transient" "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME")
+
 	if [[ -n "$icon" ]]; then
-            notify-send "$title" "$body" --app-name=zsh $transient "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME" "--icon=$icon"
-        else
-            notify-send "$title" "$body" --app-name=zsh $transient "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
+            arguments+=("--icon=$icon")
 	fi
+        notify-send ${arguments[@]}
 
     elif [[ "$platform" == "Darwin" ]]; then
         osascript \
