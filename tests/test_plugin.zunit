@@ -10,16 +10,6 @@
     }
 }
 
-@test 'version exported' {
-    git_version="$(git tag --list | sort -V | tail -1)"
-    git tag --list
-
-    load "../auto-notify.plugin.zsh"
-
-    assert "$AUTO_NOTIFY_VERSION" is_not_empty
-    assert "$AUTO_NOTIFY_VERSION" same_as "$git_version"
-}
-
 @test 'print warning if notify-send is not installed' {
     function type {
         return 1

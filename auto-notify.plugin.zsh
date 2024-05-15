@@ -1,4 +1,4 @@
-export AUTO_NOTIFY_VERSION="0.8.1"
+export AUTO_NOTIFY_VERSION="0.10.2"
 
 # Time it takes for a notification to expire
 [[ -z "$AUTO_NOTIFY_EXPIRE_TIME" ]] &&
@@ -6,6 +6,7 @@ export AUTO_NOTIFY_VERSION="0.8.1"
 # Threshold in seconds for when to automatically show a notification
 [[ -z "$AUTO_NOTIFY_THRESHOLD" ]] &&
     export AUTO_NOTIFY_THRESHOLD=10
+
 # List of commands/programs to ignore sending notifications for
 [[ -z "$AUTO_NOTIFY_IGNORE" ]] &&
     export AUTO_NOTIFY_IGNORE=(
@@ -52,11 +53,20 @@ function _auto_notify_message() {
     if [[ "$platform" == "Linux" ]]; then
         local urgency="normal"
         local transient="--hint=int:transient:1"
+        local icon=${AUTO_NOTIFY_ICON_SUCCESS:-""}
         if [[ "$exit_code" != "0" ]]; then
             urgency="critical"
             transient=""
+            icon=${AUTO_NOTIFY_ICON_FAILURE:-""}
         fi
-        notify-send "$title" "$body" --app-name=zsh $transient "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME"
+
+        local arguments=("$title" "$body" "--app-name=zsh" "$transient" "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME")
+
+	if [[ -n "$icon" ]]; then
+            arguments+=("--icon=$icon")
+	fi
+        notify-send ${arguments[@]}
+
     elif [[ "$platform" == "Darwin" ]]; then
         osascript \
           -e 'on run argv' \

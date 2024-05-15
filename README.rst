@@ -162,6 +162,17 @@ then all the values in ``AUTO_NOTIFY_IGNORE`` are not used.
 
     export AUTO_NOTIFY_WHITELIST=("apt-get" "docker")
 
+**Adding an icon - Linux**
+
+If you wish to have an icon displayed on command success and/or failure, you can do so by defining the environmental variables ``AUTO_NOTIFY_ICON_SUCCESS`` and ``AUTO_NOTIFY_ICON_FAILURE`` respectively.
+
+::
+
+    export AUTO_NOTIFY_ICON_SUCCESS=/path/to/success/icon.png
+    export AUTO_NOTIFY_ICON_FAILURE=/path/to/failure/icon.png
+
+
+
 Temporarily Disabling Notifications
 -----------------------------------
 
