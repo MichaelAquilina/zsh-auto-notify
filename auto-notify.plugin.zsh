@@ -54,7 +54,7 @@ function _auto_notify_message() {
         local urgency="normal"
         local transient="--hint=int:transient:1"
         local icon=${AUTO_NOTIFY_ICON_SUCCESS:-""}
-        if [[ "$exit_code" != "0" ]]; then
+        if [[ "$exit_code" != "0" ]] && [[ "$exit_code" != "130" ]]; then
             urgency="critical"
             transient=""
             icon=${AUTO_NOTIFY_ICON_FAILURE:-""}
