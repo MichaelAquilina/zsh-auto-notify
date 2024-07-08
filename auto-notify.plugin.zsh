@@ -54,6 +54,9 @@ function _auto_notify_message() {
         local urgency="normal"
         local transient="--hint=int:transient:1"
         local icon=${AUTO_NOTIFY_ICON_SUCCESS:-""}
+        # Exit code 130 is returned when a process is terminated with SIGINT.
+        # Since the user is already interacting with the program, there is no
+        # need to make the notification persistent.
         if [[ "$exit_code" != "0" ]] && [[ "$exit_code" != "130" ]]; then
             urgency="critical"
             transient=""
