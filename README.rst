@@ -151,6 +151,18 @@ a new array.
     # redefine what is ignored by auto-notify
     export AUTO_NOTIFY_IGNORE=("docker" "man" "sleep")
 
+Commands from the file auto-notify-ignored.txt are also also appended to the ``AUTO_NOTIFY_IGNORE`` variable.
+This file is searched for in ``$ZDOTDIR``, or in your home dir if ``$ZDOTDIR`` isn't exported.
+You might have to create it, it isn't there by default.
+Each line in this file will be appended as one item (command) to the array.
+If you wish to use custom location and/or name of the auto-notify-ignored.txt file,
+then set ``AUTO_NOTIFY_IGNORE_FILE``` variable to your custom path.
+
+::
+
+    # set custom path to an ignore file
+    export AUTO_NOTIFY_IGNORE_FILE="${HOME}/Documents/my-custom-ignore.txt"
+
 **Using a Whitelist to ignore commands**
 
 If you wish to use a whitelist approach instead of the default blacklist approach used by ``AUTO_NOTIFY_IGNORE``,

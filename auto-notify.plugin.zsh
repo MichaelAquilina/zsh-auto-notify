@@ -6,6 +6,9 @@ export AUTO_NOTIFY_VERSION="0.10.2"
 # Threshold in seconds for when to automatically show a notification
 [[ -z "$AUTO_NOTIFY_THRESHOLD" ]] &&
     export AUTO_NOTIFY_THRESHOLD=10
+# Path to auto-notify-ignored.txt - file with ignored commands 
+[[ -z "$AUTO_NOTIFY_IGNORE_FILE" ]] &&
+    export AUTO_NOTIFY_IGNORE_FILE="${ZDOTDIR:-$HOME}/auto-notify-ignored.txt"
 
 # List of commands/programs to ignore sending notifications for
 [[ -z "$AUTO_NOTIFY_IGNORE" ]] &&
@@ -23,6 +26,16 @@ export AUTO_NOTIFY_VERSION="0.10.2"
         'ssh'
         'nano'
     )
+
+# If AUTO_NOTIFY_WHITELIST isn't defined, read the file in AUTO_NOTIFY_IGNORE_FILE
+# and append each line in that file to AUTO_NOTIFY_IGNORE array
+if [[ -z "$AUTO_NOTIFY_WHITELIST" ]]; then
+    if [[ -e "$AUTO_NOTIFY_IGNORE_FILE" ]]; then
+        while IFS= read -r line; do
+            AUTO_NOTIFY_IGNORE+=("$line")
+        done < "$AUTO_NOTIFY_IGNORE_FILE"
+    fi
+fi
 
 function _auto_notify_format() {
     local MESSAGE="$1"
