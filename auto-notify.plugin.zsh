@@ -71,11 +71,16 @@ function _auto_notify_message() {
         notify-send ${arguments[@]}
 
     elif [[ "$platform" == "Darwin" ]]; then
-        osascript \
-          -e 'on run argv' \
-          -e 'display notification (item 1 of argv) with title (item 2 of argv)' \
-          -e 'end run' \
-          "$body" "$title"
+        # Exit code 130 is returned when a process is terminated with SIGINT.
+        # Since the user is already interacting with the program, there is no
+        # need to notify them.
+        if [[ "$exit_code" != "130" ]]; then
+            osascript \
+              -e 'on run argv' \
+              -e 'display notification (item 1 of argv) with title (item 2 of argv)' \
+              -e 'end run' \
+              "$body" "$title"
+        fi
     else
         printf "Unknown platform for sending notifications: $platform\n"
         printf "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/\n"
