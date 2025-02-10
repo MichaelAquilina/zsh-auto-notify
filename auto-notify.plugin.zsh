@@ -6,6 +6,9 @@ export AUTO_NOTIFY_VERSION="0.10.2"
 # Threshold in seconds for when to automatically show a notification
 [[ -z "$AUTO_NOTIFY_THRESHOLD" ]] &&
     export AUTO_NOTIFY_THRESHOLD=10
+# Enable or disable notifications for SSH sessions (0 = disabled, 1 = enabled)
+[[ -z "$AUTO_NOTIFY_ENABLE_SSH" ]] &&
+    export AUTO_NOTIFY_ENABLE_SSH=0
 
 # List of commands/programs to ignore sending notifications for
 [[ -z "$AUTO_NOTIFY_IGNORE" ]] &&
@@ -65,10 +68,22 @@ function _auto_notify_message() {
 
         local arguments=("$title" "$body" "--app-name=zsh" "$transient" "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME")
 
-	if [[ -n "$icon" ]]; then
-            arguments+=("--icon=$icon")
-	fi
-        notify-send ${arguments[@]}
+        if [[ -n "$icon" ]]; then
+                arguments+=("--icon=$icon")
+        fi
+
+        # Check if the script is running over SSH
+        if [[ -n "${SSH_CLIENT}" || -n "${SSH_CONNECTION}" ]]; then
+            # Extract the client IP address from environment
+            local client_ip="${SSH_CLIENT%% *}"
+            [[ -z "$client_ip" ]] && client_ip="${SSH_CONNECTION%% *}"
+
+            # Forward the notify-send command to the client machine via SSH
+            ssh "${USER}@${client_ip}" "$(printf '%q ' notify-send "${arguments[@]}")"
+        else
+            # If not running over SSH, send notification locally
+            notify-send "${arguments[@]}"
+        fi
 
     elif [[ "$platform" == "Darwin" ]]; then
         osascript \
@@ -90,8 +105,8 @@ function _is_auto_notify_ignored() {
     # Remove leading whitespace
     target_command="$(echo "$target_command" | sed -e 's/^ *//')"
 
-    # If the command is being run over SSH, then ignore it
-    if [[ -n ${SSH_CLIENT-} || -n ${SSH_TTY-} || -n ${SSH_CONNECTION-} ]]; then
+    # Ignore the command if running over SSH and AUTO_NOTIFY_ENABLE_SSH is disabled
+    if [[ -n ${SSH_CLIENT-} || -n ${SSH_TTY-} || -n ${SSH_CONNECTION-} ]] && [[ "${AUTO_NOTIFY_ENABLE_SSH-1}" == "0" ]]; then
         print "yes"
         return
     fi

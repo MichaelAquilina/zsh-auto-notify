@@ -129,6 +129,19 @@ NOTE: This configuration option currently only works for Linux.
     # Set notification expiry to 10 seconds
     export AUTO_NOTIFY_EXPIRE_TIME=10000
 
+**Notification Forwarding Over SSH**
+
+You can configure whether notifications will be forwarded to SSH client by setting the environment
+variable ``AUTO_NOTIFY_ENABLE_SSH`` to enable ("1") or disable ("0"). The default value is set to 0.
+NOTE: This configuration option currently only works for Linux.
+
+::
+
+    # Enable notification forwarding to SSH client
+    export AUTO_NOTIFY_ENABLE_SSH=1
+    # Disable notification forwarding to SSH client
+    export AUTO_NOTIFY_ENABLE_SSH=0
+
 
 **Ignored Commands**
 
