@@ -9,6 +9,9 @@ export AUTO_NOTIFY_VERSION="0.10.2"
 # Enable or disable notifications for SSH sessions (0 = disabled, 1 = enabled)
 [[ -z "$AUTO_NOTIFY_ENABLE_SSH" ]] &&
     export AUTO_NOTIFY_ENABLE_SSH=0
+# Enable transient notifications to prevent them from being saved in the notification history
+[[ -z "$AUTO_NOTIFY_ENABLE_TRANSIENT" ]] &&
+    export AUTO_NOTIFY_ENABLE_TRANSIENT=1
 
 # List of commands/programs to ignore sending notifications for
 [[ -z "$AUTO_NOTIFY_IGNORE" ]] &&
@@ -55,7 +58,7 @@ function _auto_notify_message() {
 
     if [[ "$platform" == "Linux" ]]; then
         local urgency="normal"
-        local transient="--hint=int:transient:1"
+        local transient="--hint=int:transient:$AUTO_NOTIFY_ENABLE_TRANSIENT"
         local icon=${AUTO_NOTIFY_ICON_SUCCESS:-""}
         # Exit code 130 is returned when a process is terminated with SIGINT.
         # Since the user is already interacting with the program, there is no

@@ -142,6 +142,19 @@ NOTE: This configuration option currently only works for Linux.
     # Disable notification forwarding to SSH client
     export AUTO_NOTIFY_ENABLE_SSH=0
 
+**Notification Persistence in Notification History**
+
+You can configure whether notifications will persist in notification history by setting the environment
+variable ``AUTO_NOTIFY_ENABLE_TRANSIENT`` to enable ("1") or disable ("0"). The default value is set to 1.
+NOTE: This configuration option currently only works for Linux.
+
+::
+
+    # Enable persistent notifications
+    export AUTO_NOTIFY_ENABLE_TRANSIENT=0
+    # Disable persistent notifications
+    export AUTO_NOTIFY_ENABLE_TRANSIENT=1
+
 
 **Ignored Commands**
 
