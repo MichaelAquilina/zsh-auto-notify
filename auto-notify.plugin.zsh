@@ -12,6 +12,10 @@ export AUTO_NOTIFY_VERSION="0.10.2"
 # Enable transient notifications to prevent them from being saved in the notification history
 [[ -z "$AUTO_NOTIFY_ENABLE_TRANSIENT" ]] &&
     export AUTO_NOTIFY_ENABLE_TRANSIENT=1
+# Configure whether notifications should be canceled when receiving a SIGINT (Ctrl+C)
+[[ -z "$AUTO_NOTIFY_CANCEL_ON_SIGINT" ]] &&
+    export AUTO_NOTIFY_CANCEL_ON_SIGINT=0
+
 
 # List of commands/programs to ignore sending notifications for
 [[ -z "$AUTO_NOTIFY_IGNORE" ]] &&
@@ -57,16 +61,25 @@ function _auto_notify_message() {
     body="$(_auto_notify_format "$text" "$command" "$elapsed" "$exit_code")"
 
     if [[ "$platform" == "Linux" ]]; then
+        # Set default notification properties
         local urgency="normal"
         local transient="--hint=int:transient:$AUTO_NOTIFY_ENABLE_TRANSIENT"
-        local icon=${AUTO_NOTIFY_ICON_SUCCESS:-""}
-        # Exit code 130 is returned when a process is terminated with SIGINT.
-        # Since the user is already interacting with the program, there is no
-        # need to make the notification persistent.
-        if [[ "$exit_code" != "0" ]] && [[ "$exit_code" != "130" ]]; then
+        local icon="${AUTO_NOTIFY_ICON_SUCCESS:-""}"
+
+        # Handle specific exit codes
+        if [[ "$exit_code" -eq 130 ]]; then
+            # Exit code 130 indicates termination by SIGINT (Ctrl+C).
+            # If AUTO_NOTIFY_CANCEL_ON_SIGINT is enabled, suppress the notification.
+            if [[ "${AUTO_NOTIFY_CANCEL_ON_SIGINT}" -eq 1 ]]; then
+                return
+            fi
             urgency="critical"
-            transient=""
-            icon=${AUTO_NOTIFY_ICON_FAILURE:-""}
+            transient="--hint=int:transient:1"
+            icon="${AUTO_NOTIFY_ICON_FAILURE:-""}"
+        elif [[ "$exit_code" -ne 0 ]]; then
+            # For all other non-zero exit codes, mark the notification as critical.
+            urgency="critical"
+            icon="${AUTO_NOTIFY_ICON_FAILURE:-""}"
         fi
 
         local arguments=("$title" "$body" "--app-name=zsh" "$transient" "--urgency=$urgency" "--expire-time=$AUTO_NOTIFY_EXPIRE_TIME")

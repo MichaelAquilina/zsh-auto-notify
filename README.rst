@@ -155,6 +155,19 @@ NOTE: This configuration option currently only works for Linux.
     # Disable persistent notifications
     export AUTO_NOTIFY_ENABLE_TRANSIENT=1
 
+**Notification Cancel on SIGINT**
+
+You can configure whether notifications will be cancelled when procees is terminated with SIGINT by setting the environment
+variable ``AUTO_NOTIFY_CANCEL_ON_SIGINT`` to enable ("1") or disable ("0"). The default value is set to 0.
+NOTE: This configuration option currently only works for Linux.
+
+::
+
+    # Enable cancellation of notifications on SIGINT
+    export AUTO_NOTIFY_CANCEL_ON_SIGINT=1
+    # Disable cancellation of notifications on SIGINT
+    export AUTO_NOTIFY_CANCEL_ON_SIGINT=0
+
 
 **Ignored Commands**
 
