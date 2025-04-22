@@ -83,13 +83,14 @@
     AUTO_COMMAND_FULL="foo bar -r"
     AUTO_COMMAND_START=11080
     AUTO_NOTIFY_EXPIRE_TIME=15000
+    AUTO_NOTIFY_ENABLE_TRANSIENT=0
     run _auto_notify_send
 
     assert $state equals 0
     assert "$lines[1]" same_as 'Notification Title: "f bar -r" Completed'
     assert "$lines[2]" same_as "Notification Body: Total time: 20 seconds"
     assert "$lines[3]" same_as "Exit code: 0"
-    assert "$lines[4]" same_as "--app-name=zsh --hint=int:transient:1 --urgency=normal --expire-time=15000"
+    assert "$lines[4]" same_as "--app-name=zsh --hint=int:transient:0 --urgency=normal --expire-time=15000"
 }
 
 @test 'auto-notify-send sends notification and icon on Linux on success' {
@@ -97,6 +98,7 @@
     AUTO_COMMAND_FULL="foo bar -r"
     AUTO_COMMAND_START=11080
     AUTO_NOTIFY_EXPIRE_TIME=15000
+    AUTO_NOTIFY_ENABLE_TRANSIENT=0
     AUTO_NOTIFY_ICON_SUCCESS=/path/to/success/icon.png
     run _auto_notify_send
 
@@ -104,7 +106,7 @@
     assert "$lines[1]" same_as 'Notification Title: "f bar -r" Completed'
     assert "$lines[2]" same_as "Notification Body: Total time: 20 seconds"
     assert "$lines[3]" same_as "Exit code: 0"
-    assert "$lines[4]" same_as "--app-name=zsh --hint=int:transient:1 --urgency=normal --expire-time=15000 --icon=/path/to/success/icon.png"
+    assert "$lines[4]" same_as "--app-name=zsh --hint=int:transient:0 --urgency=normal --expire-time=15000 --icon=/path/to/success/icon.png"
 }
 
 @test 'auto-notify-send sends notification on macOS' {
