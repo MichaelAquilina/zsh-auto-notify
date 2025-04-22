@@ -83,6 +83,7 @@
     AUTO_COMMAND_FULL="foo bar -r"
     AUTO_COMMAND_START=11080
     AUTO_NOTIFY_EXPIRE_TIME=15000
+    AUTO_NOTIFY_ENABLE_TRANSIENT=0
     run _auto_notify_send
 
     assert $state equals 0
@@ -97,6 +98,7 @@
     AUTO_COMMAND_FULL="foo bar -r"
     AUTO_COMMAND_START=11080
     AUTO_NOTIFY_EXPIRE_TIME=15000
+    AUTO_NOTIFY_ENABLE_TRANSIENT=0
     AUTO_NOTIFY_ICON_SUCCESS=/path/to/success/icon.png
     run _auto_notify_send
 
