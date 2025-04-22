@@ -1,6 +1,14 @@
 Changelog for zsh-auto-notify
 =============================
 
+0.11.0
+------
+* thankyou to @tommyhaley for the contributions in this release
+* Support forwarding notifications over SSH
+* Add options for
+   * controlling notification history persistence
+   * control behaviour of notifications on SIGINT
+
 0.10.2
 ------
 * Use preferable array argument expansion for flexible parameters
