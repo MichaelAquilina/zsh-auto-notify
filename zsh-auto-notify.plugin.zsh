@@ -1,0 +1,1 @@
+auto-notify.plugin.zsh
