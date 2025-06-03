@@ -107,7 +107,10 @@ function _auto_notify_message() {
           -e 'on run argv' \
           -e 'display notification (item 1 of argv) with title (item 2 of argv)' \
           -e 'end run' \
-          "$body" "$title"
+          "$body" "$title" \
+          2> >(grep -Ev 'ApplePersistence=(NO|YES)' >&2)
+          # ^ osascript outputs "ApplePersistence=NO" to stderr on every run, which clutters the terminal.
+          # ^ Filter stderr to remove only this message while preserving any legitimate error messages.
     else
         printf "Unknown platform for sending notifications: $platform\n"
         printf "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/\n"
