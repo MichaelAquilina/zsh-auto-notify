@@ -107,7 +107,8 @@ function _auto_notify_message() {
           -e 'on run argv' \
           -e 'display notification (item 1 of argv) with title (item 2 of argv)' \
           -e 'end run' \
-          "$body" "$title"
+          "$body" "$title" \
+          2> >(grep -Ev 'ApplePersistence=(NO|YES)' >&2)
     else
         printf "Unknown platform for sending notifications: $platform\n"
         printf "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/\n"
