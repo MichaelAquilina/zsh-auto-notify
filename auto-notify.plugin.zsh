@@ -54,6 +54,12 @@ function _auto_notify_message() {
     local DEFAULT_TITLE="\"%command\" Completed"
     local DEFAULT_BODY="$(echo -e "Total time: %elapsed seconds\nExit code: %exit_code")"
 
+    # Exit code 130 indicates termination by SIGINT (Ctrl+C).
+    # If AUTO_NOTIFY_CANCEL_ON_SIGINT is enabled, suppress the notification.
+    if [[ "$exit_code" -eq 130 ]] && [[ "${AUTO_NOTIFY_CANCEL_ON_SIGINT}" -eq 1 ]]; then
+        return
+    fi
+
     local title="${AUTO_NOTIFY_TITLE:-$DEFAULT_TITLE}"
     local text="${AUTO_NOTIFY_BODY:-$DEFAULT_BODY}"
 
@@ -68,11 +74,6 @@ function _auto_notify_message() {
 
         # Handle specific exit codes
         if [[ "$exit_code" -eq 130 ]]; then
-            # Exit code 130 indicates termination by SIGINT (Ctrl+C).
-            # If AUTO_NOTIFY_CANCEL_ON_SIGINT is enabled, suppress the notification.
-            if [[ "${AUTO_NOTIFY_CANCEL_ON_SIGINT}" -eq 1 ]]; then
-                return
-            fi
             urgency="critical"
             transient="--hint=int:transient:1"
             icon="${AUTO_NOTIFY_ICON_FAILURE:-""}"

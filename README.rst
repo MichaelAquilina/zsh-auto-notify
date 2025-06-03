@@ -159,7 +159,6 @@ NOTE: This configuration option currently only works for Linux.
 
 You can configure whether notifications will be cancelled when procees is terminated with SIGINT by setting the environment
 variable ``AUTO_NOTIFY_CANCEL_ON_SIGINT`` to enable ("1") or disable ("0"). The default value is set to 0.
-NOTE: This configuration option currently only works for Linux.
 
 ::
 
