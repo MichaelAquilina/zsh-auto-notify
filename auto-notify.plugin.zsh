@@ -143,7 +143,7 @@ function _is_auto_notify_ignored() {
 
     if [[ -n "$AUTO_NOTIFY_WHITELIST" ]]; then
         for allowed in $AUTO_NOTIFY_WHITELIST; do
-            if [[ "$target_command" == "$allowed"* ]]; then
+            if [[ "$target_command" == "$allowed"(| *) ]]; then
                 print "no"
                 return
             fi
@@ -151,7 +151,7 @@ function _is_auto_notify_ignored() {
         print "yes"
     else
         for ignore in $AUTO_NOTIFY_IGNORE; do
-            if [[ "$target_command" == "$ignore"* ]]; then
+            if [[ "$target_command" == "$ignore"*(| *) ]]; then
                 print "yes"
                 return
             fi
