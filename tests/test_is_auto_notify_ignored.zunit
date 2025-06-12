@@ -1,0 +1,62 @@
+#!/usr/bin/env zunit
+
+@setup {
+    load "../auto-notify.plugin.zsh"
+}
+
+@test 'is_auto_notify_ignored - commands outside AUTO_NOTIFY_IGNORE' {
+    run _is_auto_notify_ignored "echo hello world"
+
+    assert $state equals 0
+    assert "$output" same_as "no"
+}
+
+@test 'is_auto_notify_ignored - all commands in AUTO_NOTIFY_IGNORE' {
+    for command in $AUTO_NOTIFY_IGNORE; do
+        run _is_auto_notify_ignored $command
+
+        assert $state equals 0
+        assert "$output" same_as "yes"
+    done
+}
+
+@test 'is_auto_notify_ignored - piped commands which are not ignored' {
+    run _is_auto_notify_ignored "echo hello world |  base64 -e"
+
+    assert $state equals 0
+    assert "$output" same_as "no"
+}
+
+@test 'is_auto_notify_ignored - piped commands which are ignored' {
+    run _is_auto_notify_ignored "echo hello world | hexdump | less -R"
+
+    assert $state equals 0
+    assert "$output" same_as "yes"
+}
+
+@test 'is_auto_notify_ignored - AUTO_NOTIFY_WHITELIST disallowed' {
+    AUTO_NOTIFY_WHITELIST="foobar"
+
+    run _is_auto_notify_ignored "boom baz"
+
+    assert $state equals 0
+    assert "$output" same_as "yes"
+}
+
+@test 'is_auto_notify_ignored - AUTO_NOTIFY_WHITELIST allowed' {
+    AUTO_NOTIFY_WHITELIST="foobar"
+
+    run _is_auto_notify_ignored "foobar baz"
+
+    assert $state equals 0
+    assert "$output" same_as "no"
+}
+
+@test 'is_auto_notify_ignored - AUTO_NOTIFY_WHITELIST allowed with sudo' {
+    AUTO_NOTIFY_WHITELIST="foobar"
+
+    run _is_auto_notify_ignored "sudo foobar baz"
+
+    assert $state equals 0
+    assert "$output" same_as "no"
+}

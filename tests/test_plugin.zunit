@@ -1,0 +1,52 @@
+#!/usr/bin/env zunit
+
+@setup {
+    function uname {
+        printf "Linux"
+    }
+    # Mock function for passing builds where we don't
+    # really need notify-send to be installed (e.g. Mac OSX)
+    function notify-send {
+    }
+}
+
+@test 'print warning if notify-send is not installed' {
+    function type {
+        return 1
+    }
+
+    run load "../auto-notify.plugin.zsh"
+
+    assert "$lines[1]" same_as "'notify-send' must be installed for zsh-auto-notify to work"
+    assert "$lines[2]" same_as "Please install it with your relevant package manager"
+
+@test 'dont load auto-notify if notify-send is not installed' {
+    function type {
+        return 1
+    }
+
+    load "../auto-notify.plugin.zsh"
+
+    assert "_auto_notify_track" not_in $preexec_functions
+    assert "_auto_notify_send" not_in $precmd_functions
+}
+
+
+@test 'hook functions are loaded by default' {
+    load "../auto-notify.plugin.zsh"
+
+    assert '_auto_notify_track' in $preexec_functions
+    assert '_auto_notify_send' in $precmd_functions
+}
+
+@test 'enable/disable auto-notify' {
+    load "../auto-notify.plugin.zsh"
+
+    disable_auto_notify
+    assert '_auto_notify_track' not_in $preexec_functions
+    assert '_auto_notify_send' not_in $precmd_functions
+
+    enable_auto_notify
+    assert '_auto_notify_track' in $preexec_functions
+    assert '_auto_notify_send' in $precmd_functions
+}

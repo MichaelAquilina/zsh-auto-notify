@@ -1,0 +1,159 @@
+#!/usr/bin/env zunit
+
+@setup {
+    load "../auto-notify.plugin.zsh"
+
+    function notify-send {
+        echo - "Notification Title: $1"
+        echo - "Notification Body: $2"
+        echo - "${@:3}"
+    }
+
+    function uname {
+        echo - "Linux"
+    }
+
+    # Mock date function to return a frozen timestamp
+    function date {
+        if [[ "$1" == +"%s" ]]; then
+            echo - "11100"
+        else
+            date - "$@"
+        fi
+    }
+}
+
+@test 'auto-notify-send does not send notification if tracking not set' {
+    unset AUTO_COMMAND
+    unset AUTO_COMMAND_FULL
+    unset AUTO_COMMAND_START
+
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$output" is_empty
+}
+
+@test 'auto-notify-send does not send notification for short task' {
+    AUTO_COMMAND="foo bar -r"
+    AUTO_COMMAND_FULL="foo bar -r"
+    AUTO_COMMAND_START=11099
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$output" is_empty
+}
+
+@test 'auto-notify-send does not send notification for ignored commands' {
+    for command in $AUTO_NOTIFY_IGNORE; do
+        AUTO_COMMAND="somealias"
+        AUTO_COMMAND_FULL="$command"
+        AUTO_COMMAND_START=11000
+        run _auto_notify_send
+
+        assert $state equals 0
+        assert "$output" is_empty
+    done
+}
+
+@test 'auto-notify-send does not send notification for ignored piped commands' {
+    AUTO_COMMAND="echo hello world |  less -r"
+    AUTO_COMMAND_FULL="echo hello world |  less -r"
+    AUTO_COMMAND_START=11000
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$output" is_empty
+}
+
+@test 'auto-notify-send does not send notification for ignored commands with arguments' {
+    for command in $AUTO_NOTIFY_IGNORE; do
+        AUTO_COMMAND="somealias bar -r"
+        AUTO_COMMAND_FULL="$command bar -r"
+        AUTO_COMMAND_START=11000
+        run _auto_notify_send
+
+        assert $state equals 0
+        assert "$output" is_empty
+    done
+}
+
+@test 'auto-notify-send sends notification on Linux' {
+    AUTO_COMMAND="f bar -r"
+    AUTO_COMMAND_FULL="foo bar -r"
+    AUTO_COMMAND_START=11080
+    AUTO_NOTIFY_EXPIRE_TIME=15000
+    AUTO_NOTIFY_ENABLE_TRANSIENT=0
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$lines[1]" same_as 'Notification Title: "f bar -r" Completed'
+    assert "$lines[2]" same_as "Notification Body: Total time: 20 seconds"
+    assert "$lines[3]" same_as "Exit code: 0"
+    assert "$lines[4]" same_as "--app-name=zsh --hint=int:transient:0 --urgency=normal --expire-time=15000"
+}
+
+@test 'auto-notify-send sends notification and icon on Linux on success' {
+    AUTO_COMMAND="f bar -r"
+    AUTO_COMMAND_FULL="foo bar -r"
+    AUTO_COMMAND_START=11080
+    AUTO_NOTIFY_EXPIRE_TIME=15000
+    AUTO_NOTIFY_ENABLE_TRANSIENT=0
+    AUTO_NOTIFY_ICON_SUCCESS=/path/to/success/icon.png
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$lines[1]" same_as 'Notification Title: "f bar -r" Completed'
+    assert "$lines[2]" same_as "Notification Body: Total time: 20 seconds"
+    assert "$lines[3]" same_as "Exit code: 0"
+    assert "$lines[4]" same_as "--app-name=zsh --hint=int:transient:0 --urgency=normal --expire-time=15000 --icon=/path/to/success/icon.png"
+}
+
+@test 'auto-notify-send sends notification on macOS' {
+    AUTO_COMMAND="f bar -r"
+    AUTO_COMMAND_FULL="foo bar -r"
+    AUTO_COMMAND_START=11080
+
+    function uname {
+        echo - "Darwin"
+    }
+
+    function osascript {
+        echo - "${@}"
+    }
+
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$lines[1]" same_as '-e on run argv -e display notification (item 1 of argv) with title (item 2 of argv) -e end run Total time: 20 seconds'
+    assert "$lines[2]" same_as 'Exit code: 0 "f bar -r" Completed'
+}
+
+@test 'auto-notify-send sends warning on unsupported platform' {
+    AUTO_COMMAND="f bar -r"
+    AUTO_COMMAND_FULL="foo bar -r"
+    AUTO_COMMAND_START=11080
+
+    function uname {
+        echo - "Hal9000"
+    }
+
+    run _auto_notify_send
+    assert $state equals 0
+    assert "$lines[1]" same_as "Unknown platform for sending notifications: Hal9000"
+    assert "$lines[2]" same_as "Please post an issue on gitub.com/MichaelAquilina/zsh-auto-notify/issues/"
+}
+
+@test 'auto-notify-send sends custom message' {
+    AUTO_COMMAND="doom -i"
+    AUTO_COMMAND_FULL="doom -i"
+    AUTO_COMMAND_START=11055
+    AUTO_NOTIFY_TITLE="%command has completed in %elapseds yo"
+    AUTO_NOTIFY_BODY="%command exited with code %exit_code"
+
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$lines[1]" same_as 'Notification Title: doom -i has completed in 45s yo'
+    assert "$lines[2]" same_as "Notification Body: doom -i exited with code 0"
+}
