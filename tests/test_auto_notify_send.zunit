@@ -157,3 +157,19 @@
     assert "$lines[1]" same_as 'Notification Title: doom -i has completed in 45s yo'
     assert "$lines[2]" same_as "Notification Body: doom -i exited with code 0"
 }
+
+@test 'auto-notify-send sends notification with low urgency' {
+    AUTO_COMMAND="f bar -r"
+    AUTO_COMMAND_FULL="foo bar -r"
+    AUTO_COMMAND_START=11080
+    AUTO_NOTIFY_URGENCY_ON_SUCCESS="low"
+    AUTO_NOTIFY_URGENCY_ON_ERROR="critical"
+    AUTO_NOTIFY_EXPIRE_TIME=8000
+    run _auto_notify_send
+
+    assert $state equals 0
+    assert "$lines[1]" same_as 'Notification Title: "f bar -r" Completed'
+    assert "$lines[2]" same_as "Notification Body: Total time: 20 seconds"
+    assert "$lines[3]" same_as "Exit code: 0"
+    assert "$lines[4]" same_as "--app-name=zsh --hint=int:transient:1 --urgency=low --expire-time=8000"
+}

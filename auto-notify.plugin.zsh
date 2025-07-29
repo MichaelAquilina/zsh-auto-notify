@@ -33,6 +33,12 @@ export AUTO_NOTIFY_VERSION="0.11.1"
         'ssh'
         'nano'
     )
+# Default notification urgency for successful exit codes
+[[ -z "$AUTO_NOTIFY_URGENCY_ON_SUCCESS" ]] &&
+    export AUTO_NOTIFY_URGENCY_ON_SUCCESS="normal"
+# Default notification urgency for error exit codes
+[[ -z "$AUTO_NOTIFY_URGENCY_ON_ERROR" ]] &&
+    export AUTO_NOTIFY_URGENCY_ON_ERROR="critical"
 
 function _auto_notify_format() {
     local MESSAGE="$1"
@@ -68,18 +74,18 @@ function _auto_notify_message() {
 
     if [[ "$platform" == "Linux" ]]; then
         # Set default notification properties
-        local urgency="normal"
+        local urgency="$AUTO_NOTIFY_URGENCY_ON_SUCCESS"
         local transient="--hint=int:transient:$AUTO_NOTIFY_ENABLE_TRANSIENT"
         local icon="${AUTO_NOTIFY_ICON_SUCCESS:-""}"
 
         # Handle specific exit codes
         if [[ "$exit_code" -eq 130 ]]; then
-            urgency="critical"
+            urgency="$AUTO_NOTIFY_URGENCY_ON_ERROR"
             transient="--hint=int:transient:1"
             icon="${AUTO_NOTIFY_ICON_FAILURE:-""}"
         elif [[ "$exit_code" -ne 0 ]]; then
             # For all other non-zero exit codes, mark the notification as critical.
-            urgency="critical"
+            urgency="$AUTO_NOTIFY_URGENCY_ON_ERROR"
             icon="${AUTO_NOTIFY_ICON_FAILURE:-""}"
         fi
 
