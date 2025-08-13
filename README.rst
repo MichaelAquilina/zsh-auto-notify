@@ -129,6 +129,8 @@ NOTE: This configuration option currently only works for Linux.
 
 ::
 
+    # Enable notifications on remote machine but do not forward
+    export AUTO_NOTIFY_ENABLE_SSH=2
     # Enable notification forwarding to SSH client
     export AUTO_NOTIFY_ENABLE_SSH=1
     # Disable notification forwarding to SSH client
