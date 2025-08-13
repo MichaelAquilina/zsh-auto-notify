@@ -90,7 +90,7 @@ function _auto_notify_message() {
         fi
 
         # Check if the script is running over SSH
-        if [[ -n "${SSH_CLIENT}" || -n "${SSH_CONNECTION}" ]]; then
+        if [[ -n "${SSH_CLIENT}" || -n "${SSH_CONNECTION}" ]] && [[ "${AUTO_NOTIFY_ENABLE_SSH-1}" == "1" ]]; then
             # Extract the client IP address from environment
             local client_ip="${SSH_CLIENT%% *}"
             [[ -z "$client_ip" ]] && client_ip="${SSH_CONNECTION%% *}"
