@@ -52,25 +52,17 @@ ZPlug_
 
     zplug "MichaelAquilina/zsh-auto-notify"
 
-Antigen_
+Antidote_
 
 ::
 
-    antigen bundle "MichaelAquilina/zsh-auto-notify"
+    antidote bundle "MichaelAquilina/zsh-auto-notify"
 
 Zgen_
 
 ::
 
     zgen load "MichaelAquilina/zsh-auto-notify"
-
-Fig_
-
-Install ``zsh-auto-notify`` with Fig in just one click.
-
-.. image:: https://fig.io/badges/install-with-fig.svg
-  :target: https://fig.io/plugins/other/zsh-auto-notify_MichaelAquilina
-  :alt: Install with Fig
 
 oh-my-zsh_
 
@@ -128,6 +120,44 @@ NOTE: This configuration option currently only works for Linux.
 
     # Set notification expiry to 10 seconds
     export AUTO_NOTIFY_EXPIRE_TIME=10000
+
+**Notification Forwarding Over SSH**
+
+You can configure whether notifications will be forwarded to SSH client by setting the environment
+variable ``AUTO_NOTIFY_ENABLE_SSH`` to enable ("1") or disable ("0"). The default value is set to 0.
+NOTE: This configuration option currently only works for Linux.
+
+::
+
+    # Enable notification forwarding to SSH client
+    export AUTO_NOTIFY_ENABLE_SSH=1
+    # Disable notification forwarding to SSH client
+    export AUTO_NOTIFY_ENABLE_SSH=0
+
+**Notification Persistence in Notification History**
+
+You can configure whether notifications will persist in notification history by setting the environment
+variable ``AUTO_NOTIFY_ENABLE_TRANSIENT`` to enable ("1") or disable ("0"). The default value is set to 1.
+NOTE: This configuration option currently only works for Linux.
+
+::
+
+    # Enable persistent notifications
+    export AUTO_NOTIFY_ENABLE_TRANSIENT=0
+    # Disable persistent notifications
+    export AUTO_NOTIFY_ENABLE_TRANSIENT=1
+
+**Notification Cancel on SIGINT**
+
+You can configure whether notifications will be cancelled when procees is terminated with SIGINT by setting the environment
+variable ``AUTO_NOTIFY_CANCEL_ON_SIGINT`` to enable ("1") or disable ("0"). The default value is set to 0.
+
+::
+
+    # Enable cancellation of notifications on SIGINT
+    export AUTO_NOTIFY_CANCEL_ON_SIGINT=1
+    # Disable cancellation of notifications on SIGINT
+    export AUTO_NOTIFY_CANCEL_ON_SIGINT=0
 
 
 **Ignored Commands**
@@ -217,11 +247,9 @@ NOTE: It is required that you use a minimum zunit version of 0.8.2
 
 .. _Zplug: https://github.com/zplug/zplug
 
-.. _Antigen: https://github.com/zsh-users/antigen
+.. _Antidote: https://antidote.sh/
 
 .. _ZGen: https://github.com/tarjoilija/zgen
-
-.. _Fig: https://fig.io
 
 .. _oh-my-zsh: https://github.com/robbyrussell/oh-my-zsh
 
